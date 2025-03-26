@@ -172,7 +172,10 @@
                                 <a href="team-single.html" class="ca-name">Lora Smith</a>
                             </div>
                             <div class="course-btn">
-                                <a href="course-single.html" class="lab-btn-text">Read More <i class="icofont-external-link"></i></a>
+                            <a href="{{ route('frontend.Course_Details', ['id' => $course->course_id]) }}" class="lab-btn-text">
+    Read More <i class="icofont-external-link"></i>
+</a>
+
                             </div>
                         </div>
                     </div>

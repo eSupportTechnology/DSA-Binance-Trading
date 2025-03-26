@@ -139,265 +139,51 @@
                         </div>
                     </div>
                 </div>
-                <div class="row g-4 justify-content-center row-cols-xl-3 row-cols-md-2 row-cols-1">
-                    <div class="col">
-                        <div class="course-item">
-                            <div class="course-inner">
-                                <div class="course-thumb">
-                                    <img src="assets/images/course/01.jpg" alt="course">
-                                </div>
-                                <div class="course-content">
-                                    <div class="course-price">$30</div>
-                                    <div class="course-category">
-                                        <div class="course-cate">
-                                            <a href="#">Adobe XD</a>
-                                        </div>
-                                        <div class="course-reiew">
-                                            <span class="ratting">
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                            </span>
-                                            <span class="ratting-count">
-                                                03 reviews
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <a href="course-single.html"><h5>Fundamentals of Adobe XD Theory Learn New</h5></a>
-                                    <div class="course-details">
-                                        <div class="couse-count"><i class="icofont-video-alt"></i> 18x Lesson</div>
-                                        <div class="couse-topic"><i class="icofont-signal"></i> Online Class</div>
-                                    </div>
-                                    <div class="course-footer">
-                                        <div class="course-author">
-                                            <img src="assets/images/course/author/01.jpg" alt="course author">
-                                            <a href="team-single.html" class="ca-name">William Smith</a>
-                                        </div>
-                                        <div class="course-btn">
-                                            <a href="course-single.html" class="lab-btn-text">Read More <i class="icofont-external-link"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
+
+               <div class="row g-4 justify-content-center">
+    @foreach ($courses as $index => $course)
+        <div class="col-xl-4 col-md-6 col-12">
+            <div class="course-item">
+                <div class="course-inner">
+                    <div class="course-thumb">
+                        @if ($course->image)
+                            <img src="{{ asset($course->image) }}" alt="course" width="320px" height="190px">
+                        @else
+                            <p>No Image</p>
+                        @endif
+                    </div>
+                    <div class="course-content">
+                       
+                        <div class="course-category">
+                            <div class="course-cate">
+                                <a href="#">Rs.{{$course->total_price}}</a>
+                                <div class="couse-count " style="color:blue;"><span style="color:grey;">First Payment:</span> Rs.{{$course->first_payment}}</div>
+                            </div>
+                         
+                        </div>
+                        <a href="course-single.html"><h5>{{ $course->name }}</h5></a>
+                        <div class="course-details">
+                            <div class="couse-count"><i class="icofont-video-alt"></i> {{$course->duration}}x Lesson</div>
+                            <div class="couse-topic"><i class="icofont-signal"></i> Online Class</div>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-author">
+                                <img src="assets/images/course/author/02.jpg" alt="course author">
+                                <a href="team-single.html" class="ca-name">Lora Smith</a>
+                            </div>
+                            <div class="course-btn">
+                                <a href="course-single.html" class="lab-btn-text">Read More <i class="icofont-external-link"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="course-item">
-                            <div class="course-inner">
-                                <div class="course-thumb">
-                                    <img src="assets/images/course/02.jpg" alt="course">
-                                </div>
-                                <div class="course-content">
-                                    <div class="course-price">$30</div>
-                                    <div class="course-category">
-                                        <div class="course-cate">
-                                            <a href="#">Photoshop</a>
-                                        </div>
-                                        <div class="course-reiew">
-                                            <span class="ratting">
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                            </span>
-                                            <span class="ratting-count">
-                                                03 reviews
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <a href="course-single.html"><h5>Certified Graphic Design with Free Project Course</h5></a>
-                                    <div class="course-details">
-                                        <div class="couse-count"><i class="icofont-video-alt"></i> 18x Lesson</div>
-                                        <div class="couse-topic"><i class="icofont-signal"></i> Online Class</div>
-                                    </div>
-                                    <div class="course-footer">
-                                        <div class="course-author">
-                                            <img src="assets/images/course/author/02.jpg" alt="course author">
-                                            <a href="team-single.html" class="ca-name">Lora Smith</a>
-                                        </div>
-                                        <div class="course-btn">
-                                            <a href="course-single.html" class="lab-btn-text">Read More <i class="icofont-external-link"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="course-item">
-                            <div class="course-inner">
-                                <div class="course-thumb">
-                                    <img src="assets/images/course/03.jpg" alt="course">
-                                </div>
-                                <div class="course-content">
-                                    <div class="course-price">$30</div>
-                                    <div class="course-category">
-                                        <div class="course-cate">
-                                            <a href="#">Photoshop</a>
-                                        </div>
-                                        <div class="course-reiew">
-                                            <span class="ratting">
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                            </span>
-                                            <span class="ratting-count">
-                                                03 reviews
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <a href="course-single.html"><h5>Theory Learn New Student And Fundamentals</h5></a>
-                                    <div class="course-details">
-                                        <div class="couse-count"><i class="icofont-video-alt"></i> 18x Lesson</div>
-                                        <div class="couse-topic"><i class="icofont-signal"></i> Online Class</div>
-                                    </div>
-                                    <div class="course-footer">
-                                        <div class="course-author">
-                                            <img src="assets/images/course/author/03.jpg" alt="course author">
-                                            <a href="team-single.html" class="ca-name">Robot Smith</a>
-                                        </div>
-                                        <div class="course-btn">
-                                            <a href="course-single.html" class="lab-btn-text">Read More <i class="icofont-external-link"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="course-item">
-                            <div class="course-inner">
-                                <div class="course-thumb">
-                                    <img src="assets/images/course/04.jpg" alt="course">
-                                </div>
-                                <div class="course-content">
-                                    <div class="course-price">$30</div>
-                                    <div class="course-category">
-                                        <div class="course-cate">
-                                            <a href="#">Adobe XD</a>
-                                        </div>
-                                        <div class="course-reiew">
-                                            <span class="ratting">
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                            </span>
-                                            <span class="ratting-count">
-                                                03 reviews
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <a href="course-single.html"><h5>Computer Fundamentals Basic Startup Ultricies Vitae</h5></a>
-                                    <div class="course-details">
-                                        <div class="couse-count"><i class="icofont-video-alt"></i> 18x Lesson</div>
-                                        <div class="couse-topic"><i class="icofont-signal"></i> Online Class</div>
-                                    </div>
-                                    <div class="course-footer">
-                                        <div class="course-author">
-                                            <img src="assets/images/course/author/04.jpg" alt="course author">
-                                            <a href="team-single.html" class="ca-name">Zinat Zaara</a>
-                                        </div>
-                                        <div class="course-btn">
-                                            <a href="course-single.html" class="lab-btn-text">Read More <i class="icofont-external-link"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="course-item">
-                            <div class="course-inner">
-                                <div class="course-thumb">
-                                    <img src="assets/images/course/05.jpg" alt="course">
-                                </div>
-                                <div class="course-content">
-                                    <div class="course-price">$30</div>
-                                    <div class="course-category">
-                                        <div class="course-cate">
-                                            <a href="#">Adobe XD</a>
-                                        </div>
-                                        <div class="course-reiew">
-                                            <span class="ratting">
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                            </span>
-                                            <span class="ratting-count">
-                                                03 reviews
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <a href="course-single.html"><h5>Boozy Halloween Drinks for the Grown Eleifend Kuismod</h5></a>
-                                    <div class="course-details">
-                                        <div class="couse-count"><i class="icofont-video-alt"></i> 18x Lesson</div>
-                                        <div class="couse-topic"><i class="icofont-signal"></i> Online Class</div>
-                                    </div>
-                                    <div class="course-footer">
-                                        <div class="course-author">
-                                            <img src="assets/images/course/author/05.jpg" alt="course author">
-                                            <a href="team-single.html" class="ca-name">Billy Rivera</a>
-                                        </div>
-                                        <div class="course-btn">
-                                            <a href="course-single.html" class="lab-btn-text">Read More <i class="icofont-external-link"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="course-item">
-                            <div class="course-inner">
-                                <div class="course-thumb">
-                                    <img src="assets/images/course/06.jpg" alt="course">
-                                </div>
-                                <div class="course-content">
-                                    <div class="course-price">$30</div>
-                                    <div class="course-category">
-                                        <div class="course-cate">
-                                            <a href="#">Adobe XD</a>
-                                        </div>
-                                        <div class="course-reiew">
-                                            <span class="ratting">
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                                <i class="icofont-ui-rating"></i>
-                                            </span>
-                                            <span class="ratting-count">
-                                                03 reviews
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <a href="course-single.html"><h5>Student Want to Learn About Science And Arts</h5></a>
-                                    <div class="course-details">
-                                        <div class="couse-count"><i class="icofont-video-alt"></i> 18x Lesson</div>
-                                        <div class="couse-topic"><i class="icofont-signal"></i> Online Class</div>
-                                    </div>
-                                    <div class="course-footer">
-                                        <div class="course-author">
-                                            <img src="assets/images/course/author/06.jpg" alt="course author">
-                                            <a href="team-single.html" class="ca-name">Subrina Kabir</a>
-                                        </div>
-                                        <div class="course-btn">
-                                            <a href="course-single.html" class="lab-btn-text">Read More <i class="icofont-external-link"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
+
+
+                    
                 </div>
                 <ul class="default-pagination lab-ul">
                     <li>

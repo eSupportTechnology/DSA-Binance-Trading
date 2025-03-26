@@ -103,7 +103,7 @@ a {
                                 
                                 <li> <a href="{{ route('frontend.home') }}">Home</a>  </li>
 
-                                <li> <a href="">courses</a> </li>
+                                <li> <a href="{{route('frontend.Course')}}">courses</a> </li>
 
                                 <li><a href="{{ route('frontend.blog') }}">Blogs</a></li>
 

@@ -25,7 +25,7 @@ Route::get('/Home_Four', [FrontendTemplateController::class, 'Home_Four'])->name
 Route::get('/Home_Five', [FrontendTemplateController::class, 'Home_Five'])->name('frontend.Home_Five');
 Route::get('/Home_Six', [FrontendTemplateController::class, 'Home_Six'])->name('frontend.Home_Six');
 Route::get('/Home_Seven', [FrontendTemplateController::class, 'Home_Seven'])->name('frontend.Home_Seven');
-Route::get('/Course', [FrontendTemplateController::class, 'Course'])->name('frontend.Course');
+Route::get('/Course', [CourseController::class, 'showCourses'])->name('frontend.Course');
 Route::get('/Course_Details', [FrontendTemplateController::class, 'Course_Details'])->name('frontend.Course_Details');
 Route::get('/blog', [FrontendTemplateController::class, 'blog'])->name('frontend.blog');
 Route::get('/blog_style2', [FrontendTemplateController::class, 'blog_style2'])->name('frontend.blog_style2');

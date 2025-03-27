@@ -8,12 +8,16 @@ use Illuminate\Http\Request;
 class CourseController extends Controller
 {
     // Show all courses
-    public function index()
-    {
+   public function index()
+    { 
         $courses = Course::all();
         return view('AdminDashboard.courses.index', compact('courses'));
     }
-
+    public function showCourses()
+    {
+        $courses = Course::all();
+        return view('frontend.Course', compact('courses')); // Adjust this to a different view
+    }
     // Show the form for creating a new course
     public function create()
     {
@@ -54,6 +58,12 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
         return view('AdminDashboard.courses.show', compact('course'));
     }
+    public function viewdetails($id)
+    {
+        $course = Course::findOrFail($id);
+        return view('frontend.Course_Details', compact('course'));
+    }
+    
 
     // Show the form for editing a course
     public function edit($id)

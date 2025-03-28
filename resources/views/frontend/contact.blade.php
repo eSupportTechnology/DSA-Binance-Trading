@@ -28,22 +28,10 @@
     z-index: 1;
 }
 
-.pageheader-content {
-    position: relative;
-    z-index: 2;
-    padding-top: 150px;
-    color: white;
-    text-align: center;
-}
 
-.breadcrumb-item a {
-    color: white;
-}
 
-.pageheader-content h2 {
-    color:rgb(255, 252, 251); /* Replace this with your desired color code */
-    font-weight: bold; /* Optional: To make the text bold */
-}
+
+
 
 </style>
 
@@ -71,7 +59,7 @@
     <div class="map-address-section padding-tb section-bg">
         <div class="container">
             <div class="section-header text-center">
-                <span class="subtitle" style="color: rgb(237, 128, 30);">Get in touch with us</span>
+                <span class="subtitle" style="color: #ee1831 !important">Get in touch with us</span>
                 <h2 class="title">We're Always Eager To Hear From You!</h2>
             </div>
             <div class="section-wrapper">
@@ -80,36 +68,34 @@
                         <div class="contact-wrapper">
                             <div class="contact-item">
                                 <div class="contact-thumb">
-                                <i class="fas fa-map-marker-alt" style="color: rgb(237, 128, 30);"></i>
+                                <i class="fas fa-map-marker-alt" style="color: rgb(18, 89, 254) !important"></i>
                                 </div>
                                 <div class="contact-content">
                                     <h6 class="title">Office Address</h6>
-                                    <p>No 320, 1/1,
-                                       Galle Road, Colombo 3,
-                                       Sri Lanka.</p>
+                                    <p>Kirillawela Kadawatha 11850</p>
                                 </div>
                             </div>
                             <div class="contact-item">
                                 <div class="contact-thumb">
-                                <i class="fas fa-phone-alt" style="color: rgb(237, 128, 30);"></i>
+                                <i class="fas fa-phone-alt" style="color: rgb(18, 89, 254) !important"></i>
                                 </div>
                                 <div class="contact-content">
                                     <h6 class="title">Phone number</h6>
-                                    <p>+94 766 888 184</p>
+                                    <p> 074 002 0222 / 070 360 0690</p>
                                 </div>
                             </div>
                             <div class="contact-item">
                                 <div class="contact-thumb">
-                                <i class="fas fa-envelope" style="color: rgb(237, 128, 30);"></i>
+                                <i class="fas fa-envelope" style="color: rgb(18, 89, 254) !important"></i>
                                 </div>
                                 <div class="contact-content">
                                     <h6 class="title">Send email </h6>
-                                    <a href="mailto:info@gmail.com">www.info@impwis@gmail.com</a>
+                                    <a href="mailto: dsacademy995@gmail.com"> dsacademy995@gmail.com</a>
                                 </div>
                             </div>
                             <div class="contact-item">
                                 <div class="contact-thumb">
-                                <i class="fas fa-globe" style="color: rgb(237, 128, 30);"></i>
+                                <i class="fas fa-globe" style="color: rgb(18, 89, 254) !important"></i>
                                 </div>
                                 <div class="contact-content">
                                     <h6 class="title">Our website</h6>
@@ -156,7 +142,7 @@
                         <textarea name="message" rows="8" id="message" placeholder="Your Message" required></textarea>
                     </div>
                     <div class="form-group w-100 text-center">
-                        <button class="lab-btn" style="background-color:rgb(237, 53, 50); "><span>Send our Message</span></button>
+                        <button class="lab-btn" style="color: #ee1831 !important"><span>Send our Message</span></button>
                     </div>
                 </form>
                 <p class="form-message"></p> 

@@ -190,7 +190,7 @@
                 </div>
                 <ul class="default-pagination lab-ul">
                     <li>
-                        <a href="#"><i class="icofont-rounded-left"></i></a>
+                        <a href="#"><i class="icofont-rounded-left" style="color: #ee1831 !important"></i></a>
                     </li>
                     <li>
                         <a href="#">01</a>
@@ -202,7 +202,7 @@
                         <a href="#">03</a>
                     </li>
                     <li>
-                        <a href="#"><i class="icofont-rounded-right"></i></a>
+                        <a href="#"><i class="icofont-rounded-right" style="color: #ee1831 !important"></i></a>
                     </li>
                 </ul>
             </div>

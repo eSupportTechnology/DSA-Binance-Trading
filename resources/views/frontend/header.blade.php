@@ -10,12 +10,12 @@ a {
 
 }
 .header-top a:hover {
-    color: #ffa600; 
+    color: #ee1831; 
     text-decoration: underline; 
 }
 .signup {
-    background-color: #ffa600;
-    border: 1px solid #ffa600; 
+    background-color: white;
+    border: 1px solid white; 
     color: #003366 !important; 
     font-size: 14px; 
     padding: 5px 20px; 
@@ -25,24 +25,31 @@ a {
 }
 .signup:hover {
     background-color:rgb(4, 40, 75);
-    color: #ffa600 !important;  
-    border: 1px solid #ffa600; 
+    color: #ee1831 !important;  
+    border: 1px solid #ee1831; 
 }
 .login {
-    background-color: transparent; 
-    border: 1px solid #ffa600; 
-    color: #ffa600; 
-    font-size: 14px;
+    
+    border: 1px solid white; 
+    color: white !important; 
+    font-size: 14px; 
     padding: 5px 20px; 
     border-radius: 20px; 
-    text-transform: uppercase; 
+    text-transform: uppercase;
+    margin-left:10px;
 }
 .login:hover {
-    background-color: #ffa600; 
-    color: #003366 !important; 
+    background-color:rgb(4, 40, 75);
+    color: #ee1831 !important;  
+    border: 1px solid #ee1831; 
 }
 .lab-ul li i{
-    color: #ffa600 !important; 
+    color: white !important; 
+    font-size:20px!important;
+}
+.lab-ul li i:hover{
+    color:  #ee1831 !important; 
+    font-size:20px!important;
 }
 </style>
 
@@ -107,9 +114,9 @@ a {
 
                                 <li><a href="{{ route('frontend.blog') }}">Blogs</a></li>
 
-                                <li> <a href="">About Us</a> </li>
+                                <li> <a href="{{ route('frontend.about') }}">About Us</a> </li>
                                    
-                                <li><a href="contact.html">Contact</a></li>
+                                <li><a href="{{ route('frontend.contact') }}">Contact</a></li>
 
                             </ul>
                         </div>

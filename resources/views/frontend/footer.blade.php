@@ -15,7 +15,7 @@
                         <form action="/">
                             <div class="nf-list">
                                 <input type="email" name="email" placeholder="Enter Your Email">
-                                <input type="submit" name="submit"  style="background-color:#ffa600;" value="Subscribe Now">
+                                <input type="submit" name="submit"  style="background-color: #ee1831;" value="Subscribe Now">
                             </div>
                         </form>
                     </div>

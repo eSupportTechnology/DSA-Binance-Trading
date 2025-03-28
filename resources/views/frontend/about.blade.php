@@ -108,10 +108,10 @@
             <div class="col">
                 <div class="about-left">
                     <div class="about-thumb">
-                        <img src="frontend/assets/images/about/01.jpg" alt="about">
+                        <img src="frontend/assets/images/about/4.png" alt="about">
                     </div>
                     <div class="abs-thumb">
-                        <img src="frontend/assets/images/about/02.jpg" alt="about">
+                        <img src="frontend/assets/images/about/5.png" alt="about">
                     </div>
                     <div class="about-left-content">
                         <h3>30+</h3>
@@ -132,7 +132,7 @@
                         <ul class="lab-ul">
                             <li>
                                 <div class="sr-left">
-                                    <i class="fas fa-chalkboard-teacher fa-3x" style="color: rgb(18, 89, 254) !important"></i>
+                                    <i class="fas fa-chalkboard-teacher fa-3x" style="color: rgb(18, 89, 254) !important;font-size:50px !important"></i>
                                 </div>
                                 <div class="sr-right">
                                     <h5>Skilled Instructors</h5>
@@ -141,7 +141,7 @@
                             </li>
                             <li>
                                 <div class="sr-left">
-                                    <i class="fas fa-certificate fa-3x"  style="color: rgb(18, 89, 254) !important"></i>
+                                    <i class="fas fa-certificate fa-3x"  style="color: rgb(18, 89, 254) !important ;font-size:50px !important"></i>
                                 </div>
                                 <div class="sr-right">
                                     <h5>Get Certificate</h5>
@@ -150,7 +150,7 @@
                             </li>
                             <li>
                                 <div class="sr-left">
-                                    <i class="fas fa-laptop fa-3x"  style="color: rgb(18, 89, 254) !important"></i>
+                                    <i class="fas fa-laptop fa-3x"  style="color: rgb(18, 89, 254) !important;font-size:50px !important"></i>
                                 </div>
                                 <div class="sr-right">
                                     <h5>Online Classes</h5>

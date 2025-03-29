@@ -99,7 +99,7 @@
                                     <i class="icofont-search"></i> 
                                 </div>
                                 <input type="text" placeholder="Keywords of your course" style="background-color:#e5e7eb";>
-                                <button type="submit" style="background-color:#edb21e; color:#111827;">Search Course</button>
+                                <button type="submit" style="color:#111827;">Search Course</button>
                             </form>
                             <div class="banner-catagory d-flex flex-wrap" style="margin: top 40px;">
                                 <p>Most Popular : </p>
@@ -586,7 +586,7 @@
                             <ul class="lab-ul">
                                 <li>
                                     <div class="sr-left">
-                                        <img src="{{ asset('assets/images/skill.jpeg') }}" alt="about icon">
+                                        <img src="{{ asset('frontend/assets/images/skill.jpeg') }}" alt="about icon">
                                     </div>
                                     <div class="sr-right">
                                         <h5>Skilled Instructors</h5>
@@ -595,7 +595,7 @@
                                 </li>
                                 <li>
                                     <div class="sr-left">
-                                        <img src="{{ asset('assets/images/certificate.jpeg') }}" alt="about icon">
+                                        <img src="{{ asset('frontend/assets/images/certificate.jpeg') }}" alt="about icon">
                                     </div>
                                     <div class="sr-right">
                                         <h5>Get Certificate</h5>
@@ -604,7 +604,7 @@
                                 </li>
                                 <li>
                                     <div class="sr-left">
-                                        <img src="{{ asset('assets/images/online.jpeg') }}" alt="about icon">
+                                        <img src="{{ asset('frontend/assets/images/online.jpeg') }}" alt="about icon">
                                     </div>
                                     <div class="sr-right">
                                         <h5>Online Classes</h5>
@@ -849,7 +849,7 @@
                         <div class="post-item">
                             <div class="post-inner">
                                 <div class="post-thumb">
-                                    <a href="blog-single.html"><img src="assets/images/blog/01.jpg" alt="blog thumb"></a>
+                                    <a href="blog-single.html"><img src="frontend/assets/images/blog/01.jpg" alt="blog thumb"></a>
                                 </div>
                                 <div class="post-content">
                                     <a href="blog-single.html"><h4>Scottish Creatives To Receive Funded Business.</h4></a>
@@ -877,7 +877,7 @@
                         <div class="post-item">
                             <div class="post-inner">
                                 <div class="post-thumb">
-                                    <a href="blog-single.html"><img src="assets/images/blog/02.jpg" alt="blog thumb"></a>
+                                    <a href="blog-single.html"><img src="frontend/assets/images/blog/02.jpg" alt="blog thumb"></a>
                                 </div>
                                 <div class="post-content">
                                     <a href="blog-single.html"><h4>Scottish Creatives To Receive Funded Business.</h4></a>
@@ -905,7 +905,7 @@
                         <div class="post-item">
                             <div class="post-inner">
                                 <div class="post-thumb">
-                                    <a href="blog-single.html"><img src="assets/images/blog/03.jpg" alt="blog thumb"></a>
+                                    <a href="blog-single.html"><img src="frontend/assets/images/blog/03.jpg" alt="blog thumb"></a>
                                 </div>
                                 <div class="post-content">
                                     <a href="blog-single.html"><h4>Scottish Creatives To Receive Funded Business.</h4></a>
@@ -994,12 +994,12 @@
                             <div class="achieve-item">
                                 <div class="achieve-inner">
                                     <div class="achieve-thumb">
-                                        <img src="assets/images/achive/01.png" alt="achieve thumb">
+                                        <img src="frontend/assets/images/achive/01.png" alt="achieve thumb">
                                     </div>
                                     <div class="achieve-content">
                                         <h4>Start Teaching Today</h4>
                                         <p>Seamlessly engage technically sound coaborative reintermed goal oriented content rather than ethica</p>
-                                        <a href="#" class="lab-btn" style="color:#edb21e;"><span>Become A Instructor</span></a>
+                                        <a href="#" class="lab-btn"style="background-color:rgb(248, 179, 187)"><span>Become A Instructor</span></a>
                                     </div>
                                 </div>
                             </div>
@@ -1008,12 +1008,12 @@
                             <div class="achieve-item">
                                 <div class="achieve-inner">
                                     <div class="achieve-thumb">
-                                        <img src="assets/images/achive/02.png" alt="achieve thumb">
+                                        <img src="frontend/assets/images/achive/02.png" alt="achieve thumb">
                                     </div>
                                     <div class="achieve-content">
                                         <h4>If You Join Our Course</h4>
                                         <p>Seamlessly engage technically sound coaborative reintermed goal oriented content rather than ethica</p>
-                                        <a href="#" class="lab-btn" style="background-color:#ffa600;"><span>Register For Free</span></a>
+                                        <a href="#" class="lab-btn" style="background-color:#ee1831 !important;"><span>Register For Free</span></a>
                                     </div>
                                 </div>
                             </div>

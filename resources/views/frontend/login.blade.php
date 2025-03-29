@@ -1,6 +1,6 @@
 @extends('frontend.master')
 
-@section('title', 'Home - Edukon')
+@section('title', 'Home - DSA Academy')
 
 @section('content')
 

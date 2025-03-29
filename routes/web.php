@@ -51,7 +51,7 @@ Route::view('international-stu', 'frontend.international-stu')->name('internatio
 Route::get('/frontend/international-stu', function (){
     return view('frontend.international-stu');
 })->name('frontend.international-stu');
-Route::get('/frontend/contact', function (){
+Route::get('/contact', function (){
     return view('frontend.contact');
 })->name('frontend.contact');
 require __DIR__.'/auth.php';

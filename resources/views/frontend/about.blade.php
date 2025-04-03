@@ -87,11 +87,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="pageheader-content text-center">
-                        <h2>Our Blog Posts</h2>
+                        <h2>About Us Page</h2>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Blog</li>
+                                <li class="breadcrumb-item active" aria-current="page">About Us</li>
                             </ol>
                         </nav>
                     </div>

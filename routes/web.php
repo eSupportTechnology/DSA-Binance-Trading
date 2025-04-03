@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendTemplateController;
 use App\Http\Controllers\BackendTemplateController;
@@ -8,6 +9,32 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseFileController;
 use App\Http\Controllers\CourseRecordingController;
 use App\Http\Controllers\CourseZoomLinkController;
+use App\Http\Controllers\BranchController;
+use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\VipPackageController;
+use App\Http\Controllers\YoutubeVideoController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\VipPackageBookingController;
+
+// Verification notice
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth:customer')->name('verification.notice');
+
+// Verification link
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/'); // 👈 redirect to wherever you want
+})->middleware(['auth:customer', 'signed'])->name('verification.verify');
+
+// Resend verification email
+Route::post('/email/verification-notification', function () {
+    auth('customer')->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth:customer', 'throttle:6,1'])->name('verification.send');
+
 
 
 Route::middleware('auth')->group(function () {
@@ -29,7 +56,7 @@ Route::get('/Course', [CourseController::class, 'showCourses'])->name('frontend.
 Route::get('/Course_Details/{id}', [CourseController::class, 'viewdetails'])->name('frontend.Course_Details');
 
 Route::get('/blog', [FrontendTemplateController::class, 'blog'])->name('frontend.blog');
-Route::get('/blog_style2', [FrontendTemplateController::class, 'blog_style2'])->name('frontend.blog_style2');
+Route::get('/blog/{id}', [FrontendTemplateController::class, 'blog_style2'])->name('frontend.blog.show');
 Route::get('/blog_style3', [FrontendTemplateController::class, 'blog_style3'])->name('frontend.blog_style3');
 Route::get('/blog_single', [FrontendTemplateController::class, 'blog_single'])->name('frontend.blog_single');
 Route::get('/about', [FrontendTemplateController::class, 'about'])->name('frontend.about');
@@ -42,12 +69,40 @@ Route::get('/search_page', [FrontendTemplateController::class, 'search_page'])->
 Route::get('/search_none', [FrontendTemplateController::class, 'search_none'])->name('frontend.search_none');
 Route::get('/404', [FrontendTemplateController::class, 'error'])->name('frontend.404');
 Route::get('/contact', [FrontendTemplateController::class, 'contact'])->name('frontend.contact');
-Route::get('/login', [FrontendTemplateController::class, 'login'])->name('frontend.login');
-Route::get('/signup', [FrontendTemplateController::class, 'signup'])->name('frontend.signup');
 Route::get('/team_single', [FrontendTemplateController::class, 'team_single'])->name('frontend.team_single');
 Route::get('/forgetpass', [FrontendTemplateController::class, 'forgetpass'])->name('frontend.forgetpass');
 Route::get('/study', [FrontendTemplateController::class, 'study'])->name('frontend.study');
 Route::view('international-stu', 'frontend.international-stu')->name('international-stu');
+Route::get('/vip_Packages', [FrontendTemplateController::class, 'vipPackages'])->name('frontend.vip.packages');
+Route::get('/vip-packages/{id}', [FrontendTemplateController::class, 'showVipPackage'])->name('frontend.vip.package.show');
+Route::get('/vippackage/book/{id}', [VipPackageBookingController::class, 'create'])->name('vip-packages.book');
+Route::post('/vippackage/submit', [VipPackageBookingController::class, 'store'])->name('vip-packages.booking.submit');
+
+
+
+
+// Auth Routes for Customer
+Route::get('/customer/register', [CustomerAuthController::class, 'showRegister'])->name('customer.register');
+Route::post('/customer/register', [CustomerAuthController::class, 'register'])->name('customer.register.submit');
+Route::get('/customer/login', [CustomerAuthController::class, 'showLogin'])->name('customer.login');
+Route::post('/customer/login', [CustomerAuthController::class, 'login'])->name('customer.login.submit');
+Route::post('/customer/logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
+
+
+Route::get('/verify-code', [CustomerAuthController::class, 'showCodeForm'])->name('customer.verify.code.form');
+Route::post('/verify-code', [CustomerAuthController::class, 'verifyCode'])->name('customer.verify.code');
+
+//buy course
+Route::middleware('web')->group(function () {
+    Route::get('/course/{id}/book', [BookingController::class, 'showForm'])->name('course.booking.form');
+    Route::post('/course/book', [BookingController::class, 'store'])->name('course.booking.submit');
+});
+Route::get('/booking/success', function () {
+    return view('frontend.booking-success');
+})->name('booking.success');
+
+
+
 Route::get('/frontend/international-stu', function (){
     return view('frontend.international-stu');
 })->name('frontend.international-stu');
@@ -60,7 +115,9 @@ require __DIR__.'/auth.php';
 
 //admindashboard
 
-Route::get('/admin', [BackendTemplateController::class, 'index'])->name('admin');
+Route::get('/admin', [BackendTemplateController::class, 'index'])->name('admin.dashboard');
+
+Route::get('/adminksjjd', [BackendTemplateController::class, 'indexasdasd'])->name('admin');
 
 //course Managment
 Route::prefix('courses')->group(function () {
@@ -71,6 +128,17 @@ Route::prefix('courses')->group(function () {
     Route::get('/{id}/edit', [CourseController::class, 'edit'])->name('courses.edit');
     Route::put('/{id}', [CourseController::class, 'update'])->name('courses.update');
     Route::delete('/{id}', [CourseController::class, 'destroy'])->name('courses.destroy');
+});
+
+//branch Managment
+Route::prefix('branches')->group(function () {
+    Route::get('/', [BranchController::class, 'index'])->name('branches.index');
+    Route::get('/create', [BranchController::class, 'create'])->name('branches.create');
+    Route::post('/store', [BranchController::class, 'store'])->name('branches.store');
+    Route::get('/{id}', [BranchController::class, 'show'])->name('branches.show');
+    Route::get('/{id}/edit', [BranchController::class, 'edit'])->name('branches.edit');
+    Route::put('/{id}', [BranchController::class, 'update'])->name('branches.update');
+    Route::delete('/{id}', [BranchController::class, 'destroy'])->name('branches.destroy');
 });
 
 //course Files Managment
@@ -96,3 +164,122 @@ Route::prefix('coursesZoomLinks')->group(function () {
     Route::post('/courses/{courseId}/files', [CourseZoomLinkController::class, 'store'])->name('coursesZoomLinks.store');
     Route::delete('/{id}', [CourseZoomLinkController::class, 'destroy'])->name('coursesZoomLinks.destroy');
 });
+
+
+//Bookings Managment
+Route::prefix('Bookings')->group(function () {
+    Route::get('/bookings/pending', [BookingController::class, 'pending'])->name('bookings.pending');
+    Route::get('/bookings/approved', [BookingController::class, 'approved'])->name('bookings.approved');
+    Route::post('/bookings/{id}/approve', [BookingController::class, 'approve'])->name('bookings.approve');
+});
+
+Route::prefix('admin/bookings')->name('admin.bookings.')->group(function () {
+    Route::get('/pending', [BookingController::class, 'pending'])->name('bookings.pending');
+    Route::get('/approved', [BookingController::class, 'approved'])->name('bookings.approved');
+    Route::post('/approve/{id}', [BookingController::class, 'approve'])->name('approve');
+    Route::get('/{id}', [BookingController::class, 'show'])->name('show');
+    Route::delete('/{id}', [BookingController::class, 'destroy'])->name('destroy');
+});
+
+
+// VIP Package Resource Routes
+Route::prefix('vip-packages')->group(function () {
+    
+    Route::get('/', [VipPackageController::class, 'index'])->name('vip-packages.index');
+    Route::get('/vip-packages/create', [VipPackageController::class, 'create'])->name('vip-packages.create');
+    Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
+    Route::get('/vip-packages/{vipPackage}', [VipPackageController::class, 'show'])->name('vip-packages.show');
+    Route::get('/vip-packages/{vipPackage}/edit', [VipPackageController::class, 'edit'])->name('vip-packages.edit');
+    Route::put('/vip-packages/{vipPackage}', [VipPackageController::class, 'update'])->name('vip-packages.update');
+    Route::delete('/vip-packages/{vipPackage}', [VipPackageController::class, 'destroy'])->name('vip-packages.destroy');
+
+});
+
+
+
+Route::prefix('admin/youtube-videos')->name('admin.youtube-videos.')->group(function () {
+    Route::get('/', [YoutubeVideoController::class, 'index'])->name('index');
+    Route::post('/', [YoutubeVideoController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [YoutubeVideoController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [YoutubeVideoController::class, 'update'])->name('update');
+    Route::delete('/{id}', [YoutubeVideoController::class, 'destroy'])->name('destroy');
+});
+
+
+
+Route::prefix('admin/reviews')->name('admin.reviews.')->group(function () {
+    Route::get('/', [ReviewController::class, 'index'])->name('index');
+    Route::get('/create', [ReviewController::class, 'create'])->name('create');
+    Route::post('/', [ReviewController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [ReviewController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [ReviewController::class, 'update'])->name('update');
+    Route::delete('/{id}', [ReviewController::class, 'destroy'])->name('destroy');
+    Route::post('/admin/reviews/{id}/toggle-status', [ReviewController::class, 'toggleStatus'])->name('toggleStatus');
+
+});
+
+
+Route::prefix('admin/settings/banners')->name('admin.banners.')->group(function () {
+    Route::get('/', [BannerController::class, 'index'])->name('index');
+    Route::get('/create', [BannerController::class, 'create'])->name('create');
+    Route::post('/', [BannerController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [BannerController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [BannerController::class, 'update'])->name('update');
+    Route::delete('/{id}', [BannerController::class, 'destroy'])->name('destroy');
+});
+
+
+use App\Http\Controllers\BlogController;
+
+Route::prefix('admin/blogs')->name('admin.blogs.')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('index');
+    Route::get('/create', [BlogController::class, 'create'])->name('create');
+    Route::post('/', [BlogController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [BlogController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [BlogController::class, 'update'])->name('update');
+    Route::delete('/{id}', [BlogController::class, 'destroy'])->name('destroy');
+});
+
+
+// Customer Admin Actions
+Route::prefix('admin/customers')->name('admin.customers.')->group(function () {
+    Route::get('/', [BackendTemplateController::class, 'index1'])->name('index');
+    Route::get('/{customer}', [BackendTemplateController::class, 'show'])->name('show');
+    Route::post('/{customer}/toggle-status', [BackendTemplateController::class, 'toggleStatus'])->name('toggleStatus');
+    Route::delete('/{customer}', [BackendTemplateController::class, 'destroy'])->name('destroy');
+});
+
+// Order Management
+Route::prefix('admin/orders')->name('admin.orders.')->group(function () {
+    Route::get('/pending', [BackendTemplateController::class, 'pendingOrders'])->name('pending');
+    Route::get('/success', [BackendTemplateController::class, 'successOrders'])->name('success');
+    Route::get('/half', [BackendTemplateController::class, 'halfPaidOrders'])->name('half'); // ✅ MOVE THIS HERE
+    Route::get('/{id}', [BackendTemplateController::class, 'showOrder'])->name('show');
+    Route::patch('/{id}/status/{status}', [BackendTemplateController::class, 'updateOrderStatus'])->name('updateStatus');
+});
+
+
+
+
+use App\Http\Controllers\StudentDashboardController;
+
+//student dashboard
+
+Route::middleware(['web'])->group(function () {
+    Route::get('/customer/dashboard', [StudentDashboardController::class, 'index'])
+        ->name('customer.dashboard');
+});
+Route::get('/student/bookings', [StudentDashboardController::class, 'bookings'])->name('student.bookings');
+Route::get('/student/bookings/{booking}/details', [StudentDashboardController::class, 'courseDetails'])->name('student.course.details');
+// Course File Access
+Route::get('/bookings/{booking}/files', [StudentDashboardController::class, 'courseFiles'])->name('student.course.files');
+
+// Course Video Recordings
+Route::get('/bookings/{booking}/recordings', [StudentDashboardController::class, 'courseRecordings'])->name('student.course.recordings');
+
+// Course Zoom Links
+Route::get('/bookings/{booking}/zoom', [StudentDashboardController::class, 'courseZoomLinks'])->name('student.course.zoom');
+
+
+
+    

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Course;
 use App\Models\CourseFile;
@@ -31,38 +31,36 @@ class CourseFileController extends Controller
         $request->validate([
             'file_name' => 'required|string|max:255',
             'files' => 'required',
-            'files.*' => 'mimes:pdf,docx,txt|max:5120',
+            'files.*' => 'mimes:pdf,docx,txt',
         ]);
-
-        $course = Course::findOrFail($courseId);
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $originalFileName = $file->getClientOriginalName();
-                $fileType = $file->getClientOriginalExtension();
-                $fileName = time() . '_' . $originalFileName;
-                $destinationPath = public_path('uploads/courses/' . $courseId . '/files');
-    
-                // Make directory if not exists
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0777, true);
+                $originalName = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $fileName = time() . '_' . $originalName;
+
+                // Upload path like: public/uploads/courses/{id}/files
+                $uploadPath = public_path("uploads/courses/{$courseId}/files");
+
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
                 }
-    
-                // Move the file to the destination path
-                $file->move($destinationPath, $fileName);
-    
-                // Save the file details to the database
+
+                $file->move($uploadPath, $fileName);
+
                 CourseFile::create([
-                    'course_id' => $courseId,
-                    'file_name' => $request->file_name,
-                    'file_path' => 'uploads/courses/' . $courseId . '/files/' . $fileName,
-                    'file_type' => $fileType,
+                    'course_id'   => $courseId,
+                    'file_name'   => $request->file_name,
+                    'file_path'   => "uploads/courses/{$courseId}/files/{$fileName}",
+                    'file_type'   => $extension,
                 ]);
             }
         }
 
         return redirect()->route('courseFile.second', $courseId)->with('success', 'Files uploaded successfully.');
     }
+
 
     public function destroy($fileId)
     {

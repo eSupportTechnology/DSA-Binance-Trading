@@ -26,15 +26,43 @@
                     <!-- Dashboard -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
-                            <i class="fa fa-tachometer-alt"></i> <!-- Corrected Icon -->
+                            <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
                         </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.dashboard') }}">AdminDashboard</a></li>
+                        </ul>
                     </li>
+
+
+                    <!-- Customer Management -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
+                            <i class="fa fa-users"></i> <!-- Corrected Icon -->
+                            <span>Customer Management</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.customers.index') }}">All Customers</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-book"></i>
+                            <span>Order Management</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.orders.pending') }}">Pending Orders</a></li>
+                            <li><a href="{{ route('admin.orders.half') }}">Half Orders</a></li>
+                            <li><a href="{{ route('admin.orders.success') }}">Success Orders</a></li>
+                        </ul>
+                    </li>
+
 
                     <!-- Course Management -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
-                            <i class="fa fa-users"></i> <!-- Corrected Icon -->
+                            <i class="fa fa-book"></i> <!-- Corrected Icon -->
                             <span>Courses Management</span>
                         </a>
                         <ul class="sidebar-submenu">
@@ -46,36 +74,92 @@
                     <!-- Course Management -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
-                            <i class="fa fa-users"></i> <!-- Corrected Icon -->
+                            <i class="fa fa-folder-open"></i> <!-- Corrected Icon -->
                             <span>Courses Links</span>
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('courseFile.index') }}">All Courses Files</a></li>
-                            <li><a href="{{ route('courseFile.create') }}">Add Courses Files</a></li>
                         </ul>
                     </li>
 
-                    <!-- Insurance Companies -->
+                    <!-- Branch Management -->
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title" href="#">
+                        <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
                             <i class="fa fa-building"></i> <!-- Corrected Icon -->
-                            <span>Insurance Companies</span>
+                            <span>Branches</span>
                         </a>
                         <ul class="sidebar-submenu">
-                            <li><a >View All Companies</a></li>
-                            <li><a >Add New Company</a></li>
+                            <li><a href="{{ route('branches.index') }}">All Branches</a></li>
+                            <li><a href="{{ route('branches.create') }}">Create Branches</a></li>
                         </ul>
                     </li>
 
-                    <!-- Insurance Requests -->
+                    <!-- Booking Requests -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="#">
                         <i class="fa fa-file-text"></i> <!-- Corrected Icon -->
-                            <span>Insurance Requests</span>
+                            <span>Booking Requests</span>
                         </a>
                         <ul class="sidebar-submenu">
-                            <li><a >All Insurance Requests</a></li>
-                            <li><a >Add Insurance Requests</a></li>
+                            <li><a href="{{ route('bookings.pending') }}">Pending Booking Requests</a></li>
+                            <li><a href="{{ route('bookings.approved') }}">Approved Booking Requests</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Vip Packages -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                        <i class="fa fa-gift"></i> <!-- Corrected Icon -->
+                            <span>Vip Packages</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('vip-packages.index') }}">All Packages</a></li>
+                            <li><a href="{{ route('vip-packages.create') }}">Add Packages</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- You Tube Videos -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                        <i class="fa fa-youtube"></i> <!-- Corrected Icon -->
+                            <span>You-Tube Videos </span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.youtube-videos.index') }}">All Packages</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Reviews -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-star"></i>
+                            <span>Reviews</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.reviews.index') }}">All Reviews</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Blog Management -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-edit"></i>
+                            <span>Blogs</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.blogs.index') }}">All Blogs</a></li>
+                            <li><a href="{{ route('admin.blogs.create') }}">Add New Blog</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Settings -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.banners.index') }}">Manage Banners</a></li>
                         </ul>
                     </li>
 

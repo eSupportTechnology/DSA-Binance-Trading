@@ -110,6 +110,40 @@
                                             <input class="form-control" type="file" name="image" accept="image/*">
                                         </div>
                                     </div>
+
+                                    <!-- Location -->
+                                    <div class="mb-3 row">
+                                        <label class="col-sm-3 col-form-label">Location</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="location" placeholder="Course Location (e.g., Colombo, Online)">
+                                        </div>
+                                    </div>
+
+                                    <!-- Mode -->
+                                    <div class="mb-3 row">
+                                        <label class="col-sm-3 col-form-label">Mode</label>
+                                        <div class="col-sm-9">
+                                            <select name="mode" class="form-control" required>
+                                                <option value="online">Online</option>
+                                                <option value="offline">Offline</option>
+                                                <option value="hybrid">Hybrid</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Branch -->
+                                    <div class="mb-3 row">
+                                        <label class="col-sm-3 col-form-label">Branch</label>
+                                        <div class="col-sm-9">
+                                            <select name="branch_id" class="form-control">
+                                                <option value="">-- Select Branch --</option>
+                                                @foreach($branches as $branch)
+                                                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

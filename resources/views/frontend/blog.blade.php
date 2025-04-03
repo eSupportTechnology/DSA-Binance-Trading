@@ -6,17 +6,17 @@
 
 
 
-  <!-- Page Header section start here -->
-  <div class="pageheader-section">
+    <!-- Page Header section start here -->
+    <div class="pageheader-section">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="pageheader-content text-center">
-                        <h2>Our Blog Posts</h2>
+                        <h2>Our Blog Classic Posts</h2>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Blog</li>
+                                <li class="breadcrumb-item active" aria-current="page">Blog classic</li>
                             </ol>
                         </nav>
                     </div>
@@ -30,195 +30,107 @@
     <!-- blog section start here -->
     <div class="blog-section padding-tb section-bg">
         <div class="container">
-            <div class="section-wrapper">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
-                    <div class="col">
-                        <div class="post-item">
-                            <div class="post-inner">
-                                <div class="post-thumb">
-                                    <a href="blog-single.html"><img src="frontend/assets/images/blog/02.jpg" alt="blog thumb" class="responsive-img" style="width:600px; height:270px"></a>
-                                </div>
-                                <div class="post-content">
-                                    <a href="blog-single.html"><h4 class="hover-red" style ="color:rgb(27, 41, 84);" onmouseover="this.style.color=' rgb(237, 53, 50)';" onmouseout="this.style.color='rgb(27, 41, 84)';">The Accomplice.</h4></a>
-                                    <div class="meta-post">
-                                        <ul class="lab-ul">
-                                            <li><i class="icofont-ui-user" style="color: rgb(42, 57, 254) !important;"></i>Begrass Tyson</li>
-                                            <li><i class="icofont-calendar" style="color: rgb(42, 57, 254) !important;"></i>April 23,2021</li>
-                                        </ul>
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-12">
+                    <article>
+                        <div class="section-wrapper">
+                            <div class="row row-cols-1 justify-content-center g-4">
+                                @forelse ($blogs as $blog)
+                                    <div class="col">
+                                        <div class="post-item style-2">
+                                            <div class="post-inner">
+                                                <!-- Media -->
+                                                <div class="post-thumb" style="width: 100%; height: 300px; overflow: hidden; border-radius: 10px;">
+                                                    @if ($blog->media_type === 'image' && $blog->media_path)
+                                                        <a href="#"><img src="{{ asset('storage/' . $blog->media_path) }}" alt="{{ $blog->title }}" style="width: 100%; height: 100%; object-fit: cover;"></a>
+                                                    @elseif ($blog->media_type === 'video' && $blog->media_path)
+                                                        <video controls style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                                            <source src="{{ asset('storage/' . $blog->media_path) }}" type="video/mp4">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    @else
+                                                        <img src="{{ asset('frontend/assets/images/blog/default.jpg') }}" alt="No media" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    @endif
+                                                </div>
+
+
+                                                <!-- Content -->
+                                                <div class="post-content">
+                                                    <a href="#"><h3>{{ $blog->title }}</h3></a>
+                                                    <div class="meta-post">
+                                                        <ul class="lab-ul">
+                                                            <i class="icofont-calendar" style=" margin-right:5px" ></i> {{ $blog->created_at->format('F d, Y') }}
+                                                            <i class="icofont-ui-user" style="margin-left:20px; margin-right:5px"></i> Admin
+                                                        </ul>
+                                                    </div>
+                                                    <p>{{ Str::limit(strip_tags($blog->content), 200) }}</p>
+                                                    <a href="{{ route('frontend.blog.show', $blog->id) }}" class="lab-btn">
+                                                        <span>Read More <i class="fas fa-arrow-up-right-from-square"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <p>Scrambling to delay the inevitable I’ll cling to the edge of your shirt All my cards are on the table So go ahead, make me hurt</p>
-                                </div>
-                                <div class="post-footer">
-                                    <div class="pf-left">
-                                        <a href="blog-single.html" class="lab-btn-text" style="color: #ee1831 !important">Read more <i class="icofont-external-link" style="color:  #ee1831 !important"></i></a>
+                                @empty
+                                    <div class="col-12 text-center">
+                                        <p>No blog posts available yet.</p>
                                     </div>
-                                    <div class="pf-right">
-                                        <i class="icofont-comment" style="color: #ee1831 !important"></i>
-                                        <span class="comment-count" style="background-color: rgb(250, 0, 29) !important">3</span>
-                                    </div>
-                                </div>
+                                @endforelse
                             </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="post-item">
-                            <div class="post-inner">
-                                <div class="post-thumb">
-                                    <a href="blog-single.html"><img src="frontend/assets/images/blog/02.jpg" alt="blog thumb" class="responsive-img" style="width:600px; height:270px"></a>
-                                </div>
-                                <div class="post-content">
-                                    <a href="blog-single.html"><h4 style ="color:rgb(27, 41, 84); "  onmouseover="this.style.color=' rgb(237, 128, 30)';" onmouseout="this.style.color='rgb(27, 41, 84)';">The Patriarchal Society.</h4></a>
-                                    <div class="meta-post">
-                                        <ul class="lab-ul">
-                                            <li><i class="icofont-ui-user" style="color: rgb(42, 57, 254) !important;"></i>Begrass Tyson</li>
-                                            <li><i class="icofont-calendar" style="color: rgb(42, 57, 254) !important;"></i>April 23,2021</li>
-                                        </ul>
-                                    </div>
-                                    <p>In general, promoting gender equality requires a multifaceted approach that involves education, legal reform, </p>
-                                </div>
-                                <div class="post-footer">
-                                    <div class="pf-left">
-                                        <a href="blog-single.html" class="lab-btn-text"style="color: #ee1831 !important">Read more <i class="icofont-external-link"></i></a>
-                                    </div>
-                                    <div class="pf-right">
-                                        <i class="icofont-comment" style="color: #ee1831 !important"></i>
-                                        <span class="comment-count">3</span>
-                                    </div>
-                                </div>
+
+                            <!-- Pagination -->
+                            <div class="mt-4 d-flex justify-content-center">
+                                {{ $blogs->links() }}
                             </div>
+
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="post-item">
-                            <div class="post-inner">
-                                <div class="post-thumb">
-                                    <a href="blog-single.html"><img src="frontend/assets/images/blog/02.jpg" alt="blog thumb" style="width:600px; height:270px"></a>
-                                </div>
-                                <div class="post-content">
-                                    <a href="blog-single.html"><h4 style ="color:rgb(27, 41, 84); "  onmouseover="this.style.color=' rgb(237, 53, 50)';" onmouseout="this.style.color='rgb(27, 41, 84)';">Oh, how the mighty have fallen!</h4></a>
-                                    <div class="meta-post">
-                                        <ul class="lab-ul">
-                                            <li><i class="icofont-ui-user" style="color: rgb(42, 57, 254) !important;"></i>Begrass Tyson</li>
-                                            <li><i class="icofont-calendar" style="color: rgb(42, 57, 254) !important;"></i>April 23,2021</li>
-                                        </ul>
-                                    </div>
-                                    <p>It was a cold, cold day in December and the grandfather clock was striking eleven.  I walk through the crowd of crime scene investigators, </p>
-                                </div>
-                                <div class="post-footer">
-                                    <div class="pf-left">
-                                        <a href="blog-single.html" class="lab-btn-text" style="color: #ee1831 !important">Read more <i class="icofont-external-link"></i></a>
-                                    </div>
-                                    <div class="pf-right">
-                                        <i class="icofont-comment"style="color: #ee1831 !important"></i>
-                                        <span class="comment-count">3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="post-item">
-                            <div class="post-inner">
-                                <div class="post-thumb">
-                                    <a href="blog-single.html"><img src="frontend/assets/images/blog/02.jpg" alt="blog thumb"></a>
-                                </div>
-                                <div class="post-content">
-                                    <a href="blog-single.html"><h4 style ="color:rgb(27, 41, 84) "  onmouseover="this.style.color=' style="color: rgb(237, 128, 30)">Surviving an Earthquake</h4></a>
-                                    <div class="meta-post">
-                                        <ul class="lab-ul">
-                                            <li><i class="icofont-ui-user" style="color: rgb(42, 57, 254) !important;"></i>Begrass Tyson</li>
-                                            <li><i class="icofont-calendar" style="color: rgb(42, 57, 254) !important;"></i>April 23,2021</li>
-                                        </ul>
-                                    </div>
-                                    <p>Keep up to date on earthquake threats in your area and be ready to act if necessary.</p>
-                                </div>
-                                <div class="post-footer">
-                                    <div class="pf-left">
-                                        <a href="blog-single.html" class="lab-btn-text"style="color: #ee1831 !important">Read more <i class="icofont-external-link"></i></a>
-                                    </div>
-                                    <div class="pf-right">
-                                        <i class="icofont-comment" style="color: #ee1831 !important"></i>
-                                        <span class="comment-count"  >3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="post-item">
-                            <div class="post-inner">
-                                <div class="post-thumb">
-                                    <a href="blog-single.html"><img src="frontend/assets/images/blog/02.jpg" alt="blog thumb"></a>
-                                </div>
-                                <div class="post-content">
-                                    <a href="blog-single.html"><h4 style ="color:rgb(27, 41, 84); "  onmouseover="this.style.color=' rgb(237, 53, 50)';" onmouseout="this.style.color='rgb(27, 41, 84)';">To My Beloved</h4></a>
-                                    <div class="meta-post">
-                                        <ul class="lab-ul">
-                                            <li><i class="icofont-ui-user" style="color: rgb(42, 57, 254) !important;"></i>Begrass Tyson</li>
-                                            <li><i class="icofont-calendar" style="color: rgb(42, 57, 254) !important;"></i>April 23,2021</li>
-                                        </ul>
-                                    </div>
-                                    <p>Therefore, in love do I close your eyes,
-                                    Your sighs I stop from escaping you,</p>
-                                </div>
-                                <div class="post-footer">
-                                    <div class="pf-left">
-                                        <a href="blog-single.html" class="lab-btn-text" style="color: #ee1831 !important">Read more <i class="icofont-external-link"></i></a>
-                                    </div>
-                                    <div class="pf-right">
-                                        <i class="icofont-comment" style="color: #ee1831 !important"></i>
-                                        <span class="comment-count">3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="post-item">
-                            <div class="post-inner">
-                                <div class="post-thumb">
-                                    <a href="blog-single.html"><img src="frontend/assets/images/blog/02.jpg" alt="blog thumb"></a>
-                                </div>
-                                <div class="post-content">
-                                    <a href="blog-single.html"><h4 style ="color:rgb(27, 41, 84); "  onmouseover="this.style.color=' rgb(237, 53, 50)';" onmouseout="this.style.color='rgb(27, 41, 84)';">The Effect of AI for the future</h4></a>
-                                    <div class="meta-post">
-                                        <ul class="lab-ul">
-                                            <li><i class="icofont-ui-user" style="color: rgb(42, 57, 254) !important;"></i>Begrass Tyson</li>
-                                            <li><i class="icofont-calendar" style="color: rgb(42, 57, 254) !important;"></i>April 23,2021</li>
-                                        </ul>
-                                    </div>
-                                    <p>In conclusion, while it is difficult to predict the full impact of AI technologies on the ICT sector,</p>
-                                </div>
-                                <div class="post-footer">
-                                    <div class="pf-left">
-                                        <a href="blog-single.html" class="lab-btn-text" style="color: #ee1831 !important">Read more <i class="icofont-external-link"></i></a>
-                                    </div>
-                                    <div class="pf-right">
-                                        <i class="icofont-comment" style="color: #ee1831 !important"></i>
-                                        <span class="comment-count">3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </article>
                 </div>
-                <ul class="default-pagination lab-ul">
-                    <li>
-                        <a href="#"><i class="icofont-rounded-left"  style="color: #ee1831 !important"></i></a>
-                    </li>
-                    <li>
-                        <a href="#">01</a>
-                    </li>
-                    <li>
-                        <a href="#" class="active">02</a>
-                    </li>
-                    <li>
-                        <a href="#">03</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="icofont-rounded-right"  style="color: #ee1831 !important"></i></a>
-                    </li>
-                </ul>
+                <div class="col-lg-4 col-12">
+                    <aside>
+                        <div class="widget widget-search">
+                            <form action="/" class="search-wrapper">
+                                <input type="text" name="s" placeholder="Search...">
+                                <button type="submit"><i class="icofont-search-2"></i></button>
+                            </form>
+                        </div>
+                        
+    
+                        <div class="widget widget-post">
+                            <div class="widget-header">
+                                <h5 class="title">Most Popular Post</h5>
+                            </div>
+                            <ul class="widget-wrapper">
+                                @foreach($blogs->take(4) as $post)
+                                    <li class="d-flex flex-wrap justify-content-between align-items-center">
+                                        <div class="post-thumb" style="width: 90px; height: 70px; overflow: hidden; border-radius: 5px;">
+                                            @if ($post->media_type === 'image' && $post->media_path)
+                                                <a href="#">
+                                                    <img src="{{ asset('storage/' . $post->media_path) }}" alt="{{ $post->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                </a>
+                                            @elseif ($post->media_type === 'video' && $post->media_path)
+                                                <a href="#">
+                                                    <video muted autoplay loop style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;">
+                                                        <source src="{{ asset('storage/' . $post->media_path) }}" type="video/mp4">
+                                                    </video>
+                                                </a>
+                                            @else
+                                                <img src="{{ asset('frontend/assets/images/blog/default.jpg') }}" alt="No media" style="width: 100%; height: 100%; object-fit: cover;">
+                                            @endif
+                                        </div>
+                                        <div class="post-content ps-2" style="width: calc(100% - 100px);">
+                                            <a href="#"><h6 class="mb-1">{{ Str::limit($post->title, 40) }}</h6></a>
+                                            <p class="mb-0" style="font-size: 13px; color: #777;">{{ $post->created_at->format('M d, Y') }}</p>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+
+                        </div>
+
+                
+                    </aside>
+                </div>
             </div>
         </div>
     </div>

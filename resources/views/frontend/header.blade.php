@@ -51,6 +51,24 @@ a {
     color:  #ee1831 !important; 
     font-size:20px!important;
 }
+
+@media (max-width: 991px) {
+    .dropdown-menu {
+        position: absolute !important;
+        right: 0 !important;
+        left: auto !important;
+        transform: translateY(10px);
+    }
+
+    .dropdown-toggle::after {
+        margin-left: 8px;
+    }
+}
+
+.dropdown-menu a.dropdown-item i {
+    margin-right: 15px;
+}
+
 </style>
 
 
@@ -90,10 +108,41 @@ a {
                             </a>
                         </li>
                     </ul>
-                    <ul class="lab-ul right">
-                        <a href="{{ route('frontend.login') }}" class="login"><i class="icofont-user"></i> <span>LOG IN</span> </a>
-                        <a href="{{ route('frontend.signup') }}"  class="signup"><i class="icofont-users"></i> <span>SIGN UP</span> </a>
-                    </ul>
+                    <ul class="lab-ul right d-flex align-items-center gap-2 pr-3">
+
+    @if(session()->has('customer_id'))
+        <li class="nav-item dropdown position-relative">
+            <a class="login dropdown-toggle d-flex align-items-center gap-2" href="#" id="customerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="icofont-user-alt-3"></i>
+                <span>{{ session('customer_name') }}</span>
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm mt-2 " aria-labelledby="customerDropdown" style="min-width: 180px;">
+                <li>
+                    <a class="dropdown-item" href="{{ route('customer.dashboard') }}">
+                        <i class="icofont-dashboard-web"></i> Dashboard
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item text-danger" href="{{ route('customer.logout') }}"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="icofont-logout"></i> Logout
+                    </a>
+                    <form id="logout-form" action="{{ route('customer.logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </li>
+            </ul>
+        </li>
+    @else
+        <li><a href="{{ route('customer.login') }}" class="login"><i class="icofont-user"></i> LOG IN</a></li>
+        <li><a href="{{ route('customer.register') }}" class="signup"><i class="icofont-users"></i> SIGN UP</a></li>
+    @endif
+
+</ul>
+
+
 
                 </div>
             </div>
@@ -112,7 +161,9 @@ a {
 
                                 <li> <a href="{{route('frontend.Course')}}">courses</a> </li>
 
-                               
+                                <li> <a href="{{route('frontend.vip.packages')}}">VIP Package</a> </li>
+
+                                <li> <a href="{{route('frontend.blog_style3')}}">Blog</a> </li>
 
                                 <li> <a href="{{ route('frontend.about') }}">About Us</a> </li>
                                    

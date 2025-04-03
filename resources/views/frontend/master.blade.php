@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/swiper.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/lightcase.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}">
+    
 
 </head>
 
@@ -40,6 +41,8 @@
     <script src="{{ asset('frontend/assets/js/swiper.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/lightcase.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/functions.js') }}"></script>
+
+    @yield('script')
 
 </body>
 </html>

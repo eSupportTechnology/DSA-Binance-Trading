@@ -3,12 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Course;
+use App\Models\VipPackage;
+use App\Models\Blog;
+use App\Models\YoutubeVideo;
 
 class FrontendTemplateController extends Controller
 {
     public function home()
     {
-        return view('frontend.Home');
+        $featuredCourses = Course::latest()->take(6)->get();
+        $vipPackages = VipPackage::where('status', 'active')->latest()->get();
+        $latestBlogs = Blog::where('status', true)->latest()->take(3)->get();
+        $youtubeVideos = YoutubeVideo::latest()->take(3)->get();
+
+        // Real stats (you can use actual counts)
+        $stats = [
+            'students' => 12000,
+            'courses' => 30,
+            'teachers' => 10,
+            'experience' => 12
+        ];
+
+
+        return view('frontend.Home', compact('featuredCourses','vipPackages' , 'latestBlogs', 'youtubeVideos',
+        'stats'));
     }
     public function Home_Two()
     {
@@ -46,14 +65,31 @@ class FrontendTemplateController extends Controller
     {
         return view('frontend.blog');
     }
-    public function blog_style2()
+
+
+    public function blog_style2($id)
     {
-        return view('frontend.blog_style2');
+        $blog = Blog::findOrFail($id);
+
+        $recentBlogs = Blog::where('id', '!=', $id)
+            ->where('status', 1)
+            ->latest()
+            ->take(4)
+            ->get();
+
+        return view('frontend.blogSingle' , compact('blog' ,  'recentBlogs'));
     }
+
+
     public function blog_style3()
     {
-        return view('frontend.blog_style3');
+        $blogs = Blog::where('status', 1)
+            ->latest()
+            ->paginate(6); // Adjust per page as needed
+
+        return view('frontend.blog', compact('blogs'));
     }
+
     public function blog_single()
     {
         return view('frontend.blog_single');
@@ -98,14 +134,7 @@ class FrontendTemplateController extends Controller
     {
         return view('frontend.contact');
     }
-    public function login()
-    {
-        return view('frontend.login');
-    }
-    public function signup()
-    {
-        return view('frontend.signup');
-    }
+    
     public function team_single()
     {
         return view('frontend.team_single');
@@ -118,4 +147,20 @@ class FrontendTemplateController extends Controller
     {
         return view('frontend.study');
     }
+
+    
+
+    public function vipPackages()
+    {
+        $packages = VipPackage::where('status', 'active')->latest()->get();
+        return view('frontend.vip_packages', compact('packages'));
+    }
+
+    public function showVipPackage($id)
+    {
+        $package = VipPackage::where('id', $id)->where('status', 'active')->firstOrFail();
+
+        return view('frontend.vip-package-details', compact('package'));
+    }
+
 }

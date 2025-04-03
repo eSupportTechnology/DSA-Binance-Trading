@@ -16,11 +16,20 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+
             $table->string('address')->nullable();
-            $table->string('contact_number', 15)->nullable();
-            $table->timestamp('registered_date')->useCurrent();
-            $table->enum('status', ['Active', 'Inactive', 'Pending'])->default('Active');
-            $table->timestamps(); // Includes created_at and updated_at columns
+            $table->string('contact_number')->unique();
+
+            $table->boolean('is_verified')->default(false); // After SMS verification
+            $table->string('verification_code')->nullable(); // SMS OTP
+
+            $table->string('stu_id')->unique()->nullable(); // Student ID assigned by admin
+            $table->foreignId('batch_id')->nullable()->constrained('batches')->nullOnDelete();
+
+            $table->boolean('status')->default(false); // 0 = inactive, 1 = active
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 

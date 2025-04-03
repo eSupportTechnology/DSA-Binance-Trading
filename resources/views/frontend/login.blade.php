@@ -29,9 +29,26 @@
         <div class="container">
             <div class="account-wrapper">
                 <h3 class="title">Login</h3>
-                <form class="account-form">
+
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                
+                <form form class="account-form" action="{{ route('customer.login.submit') }}" method="POST">
+                    @csrf
                     <div class="form-group">
-                        <input type="text" placeholder="User Name" name="username">
+                        <input type="text" placeholder="Email" name="email">
                     </div>
                     <div class="form-group">
                         <input type="password" placeholder="Password" name="password">
@@ -50,26 +67,8 @@
                     </div>
                 </form>
                 <div class="account-bottom">
-                    <span class="d-block cate pt-10">Don’t Have any Account?  <a href="registration.html">Sign Up</a></span>
-                    <span class="or"><span>or</span></span>
-                    <h5 class="subtitle">Login With Social Media</h5>
-                    <ul class="lab-ul social-icons justify-content-center">
-                        <li>
-                            <a href="#" class="facebook"><i class="icofont-facebook"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="twitter"><i class="icofont-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="linkedin"><i class="icofont-linkedin"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="pinterest"><i class="icofont-pinterest"></i></a>
-                        </li>
-                    </ul>
+                    <span class="d-block cate pt-10">Don’t Have any Account?  <a href="{{ route('customer.register') }}">Sign Up</a></span>
+                    
                 </div>
             </div>
         </div>

@@ -183,6 +183,372 @@
     <!-- banner section ending here -->
 
 
+    <!-- Achievement section start here -->
+    <div class="achievement-section padding-tb">
+        <div class="container">
+            <!-- Stats Top -->
+            <div class="section-header text-center">
+                <span class="subtitle" style="color:#ed3532;">START TO SUCCESS</span>
+                <h2 class="title" style="color:#1b2954;">Achieve Your Goals With DSA Academy</h2>
+            </div>
+
+            <div class="section-wrapper">
+                <div class="counter-part mb-5">
+                    <div class="row g-4 row-cols-lg-4 row-cols-sm-2 row-cols-1 justify-content-center">
+                        <div class="col">
+                            <div class="count-item text-center">
+                                <h2><span class="count">{{ $stats['experience'] }}</span>+</h2>
+                                <p>Years of Education Experience</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="count-item text-center">
+                                <h2><span class="count">{{ $stats['students'] }}</span>+</h2>
+                                <p>Students Trained</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="count-item text-center">
+                                <h2><span class="count">{{ $stats['teachers'] }}</span>+</h2>
+                                <p>Expert Instructors</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="count-item text-center">
+                                <h2><span class="count">{{ $stats['courses'] }}</span>+</h2>
+                                <p>Certified Courses</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- YouTube Section -->
+                <div class="achieve-part mt-4">
+                    <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-lg-3">
+                        @forelse($youtubeVideos as $video)
+                            @php
+                                $videoId = getYoutubeVideoId($video->youtube_url);
+                                $thumbnailUrl = $video->thumbnail
+                                    ? asset('storage/' . $video->thumbnail)
+                                    : ($videoId ? 'https://img.youtube.com/vi/' . $videoId . '/hqdefault.jpg' : null);
+                            @endphp
+
+                            <div class="col">
+                                <div class="p-3 bg-white shadow-sm rounded-3 d-flex align-items-center h-100" style="min-height: 200px;">
+                                    <!-- Thumbnail -->
+                                    @if($thumbnailUrl)
+                                        <div class="me-3" style="width: 200px; height: 150px; flex-shrink: 0;">
+                                            <a href="{{ $video->youtube_url }}" target="_blank">
+                                                <img src="{{ $thumbnailUrl }}" alt="{{ $video->title }}" class="w-100 h-100 object-fit-cover rounded-2">
+                                            </a>
+                                        </div>
+                                    @endif
+
+                                    <!-- Text Content -->
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-2 text-dark fw-bold">{{ Str::limit($video->title, 60) }}</h6>
+                                        <a href="{{ $video->youtube_url }}" target="_blank" class="btn btn-sm btn-outline-danger">
+                                            Watch on YouTube <i class="icofont-play-alt-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-12 text-center">
+                                <p class="text-muted">No YouTube videos found.</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <!-- About DSA Academy Section -->
+    <div class="skill-section padding-tb section-bg ">
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <!-- Left Column: About Content -->
+                <div class="col-lg-5 col-12">
+                    <div class="section-header mb-4">
+                        <span class="subtitle text-danger">About DSA Academy</span>
+                        <h2 class="title" style="color:#1b2954;">Empowering Your Future With Practical Skills</h2>
+                        <p class="mt-3">
+                            DSA Academy is a leading education provider focused on delivering high-quality, practical training in IT, business, and professional development. 
+                            We empower individuals through hands-on learning, expert instructors, and industry-recognized certifications—ensuring you're ready for the real world.
+                        </p>
+                        <a href="#courses" class="lab-btn mt-4"><span>Explore Our Courses</span></a>
+                    </div>
+                </div>
+
+                <!-- Right Column: Highlights -->
+                <div class="col-lg-7 col-12">
+                    <div class="section-wrapper">
+                        <div class="row g-4 justify-content-center row-cols-sm-2 row-cols-1">
+                            <div class="col">
+                                <div class="skill-item">
+                                    <div class="skill-inner d-flex align-items-start">
+                                        <div class="skill-thumb me-3 mb-2">
+                                            <img src="{{ asset('frontend/assets/images/instructor.png') }}" alt="Skilled Instructors" style="width:50px;">
+                                        </div>
+                                        <div class="skill-content">
+                                            <h5>Experienced Instructors</h5>
+                                            <p>Learn from professionals with real-world experience.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="skill-item">
+                                    <div class="skill-inner d-flex align-items-start">
+                                        <div class="skill-thumb me-3 mb-4">
+                                            <img src="{{ asset('frontend/assets/images/cetificate.png') }}" alt="Certificates" style="width:50px;">
+                                        </div>
+                                        <div class="skill-content">
+                                            <h5>Recognized Certifications</h5>
+                                            <p>Stand out with industry-recognized qualifications.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="skill-item">
+                                    <div class="skill-inner d-flex align-items-start">
+                                        <div class="skill-thumb me-3 mb-3">
+                                            <img src="{{ asset('frontend/assets/images/world-grid.png') }}" alt="Online Classes" style="width:50px;">
+                                        </div>
+                                        <div class="skill-content">
+                                            <h5>Flexible Learning</h5>
+                                            <p>Choose online or in-person learning modes.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="skill-item">
+                                    <div class="skill-inner d-flex align-items-start">
+                                        <div class="skill-thumb me-2 mb-4">
+                                            <img src="{{ asset('frontend/assets/images/skill/skill.gif') }}" alt="Practical Training" style="width:50px;">
+                                        </div>
+                                        <div class="skill-content">
+                                            <h5>Practical Approach</h5>
+                                            <p>Hands-on projects to apply what you learn.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About DSA Academy Section -->
+
+
+
+    <!-- Feedback Slider Section -->
+    <div class="student-feedbak-section padding-tb shape-img mb-80">
+        <div class="container">
+            <div class="section-header text-center mt-4">
+                <span class="subtitle">What Students Say</span>
+                <h2 class="title">Community Feedback</h2>
+            </div>
+
+            <div class="swiper myReviewSwiper">
+                <div class="swiper-wrapper">
+                    @foreach($reviews as $review)
+                        <div class="swiper-slide">
+                            <div class="stu-feed-item p-4 border rounded bg-white shadow-sm text-center h-100 d-flex flex-column justify-content-between">
+                                
+                                <!-- Top: Student Image -->
+                                <div class="mb-4">
+                                    <img src="{{ $review->image ? asset('storage/' . $review->image) : asset('frontend/assets/images/default-user.png') }}"
+                                        alt="{{ $review->student_name }}"
+                                        class="rounded-circle mx-auto d-block shadow"
+                                        style="width: 100px; height: 100px; object-fit: cover;">
+                                </div>
+
+                                <!-- Bottom: Name & Rating -->
+                                <div>
+                                    <h6 class="mb-2">{{ $review->student_name }}</h6>
+                                    <div class="ratting">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <i class="icofont-ui-rating{{ $i <= $review->rating ? '' : '-blank' }}"></i>
+                                        @endfor
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Swiper Arrows -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swiper Init -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            new Swiper(".myReviewSwiper", {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                breakpoints: {
+                    768: { slidesPerView: 2 },
+                    1200: { slidesPerView: 3 }
+                }
+            });
+        });
+    </script>
+    <!-- student feedbak section ending here -->
+
+
+
+    <!-- blog section start here -->
+    <div class="blog-section padding-tb section-bg">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="subtitle">FROM OUR BLOG POSTS</span>
+                <h2 class="title">More Articles From Resource Blog</h2>
+            </div>
+            <div class="section-wrapper">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center g-4">
+
+                    @forelse($latestBlogs as $blog)
+                        <div class="col">
+                            <div class="post-item">
+                                <div class="post-inner">
+                                    
+                                    <!-- Media (Image or Video) -->
+                                    <div class="post-thumb" style="height: 250px; overflow: hidden;">
+                                        @if($blog->media_type === 'image' && $blog->media_path)
+                                            <a href="#">
+                                                <img src="{{ asset('storage/' . $blog->media_path) }}" alt="{{ $blog->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                            </a>
+                                        @elseif($blog->media_type === 'video' && $blog->media_path)
+                                            <video width="100%" height="250" controls style="object-fit: cover;">
+                                                <source src="{{ asset('storage/' . $blog->media_path) }}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        @else
+                                            <img src="{{ asset('frontend/assets/images/blog/default.jpg') }}" alt="default blog" style="width: 100%; height: 100%; object-fit: cover;">
+                                        @endif
+                                    </div>
+
+                                    <!-- Content -->
+                                    <div class="post-content">
+                                        <a href="#"><h4>{{ Str::limit($blog->title, 60) }}</h4></a>
+
+                                        <div class="meta-post">
+                                            <ul class="lab-ul">
+                                                <i class="icofont-ui-user p-2" ></i>DSA Academy
+                                                <i class="icofont-calendar m-3"></i>{{ $blog->created_at->format('F d, Y') }}
+                                            </ul>
+                                        </div>
+
+                                        <p>{{ Str::limit(strip_tags($blog->content), 120) }}</p>
+                                    </div>
+
+                                    <!-- Footer -->
+                                    <div class="post-footer">
+                                        <div class="pf-left">
+                                            <a href="#" class="lab-btn-text">
+                                                Read more <i class="icofont-external-link"></i>
+                                            </a>
+                                        </div>
+                                        <div class="pf-right">
+                                            <i class="icofont-comment"></i>
+                                            <span class="comment-count">0</span> {{-- Optional: Dynamic comment count --}}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="col-12 text-center">
+                            <p class="text-muted">No blog posts found.</p>
+                        </div>
+                    @endforelse
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- blog section ending here -->
+
+
+    <!-- Promotional Banner Slider Section -->
+    <div class="achievement-section padding-tb section-bg">
+        <div class="container">
+            <div class="section-header text-center mb-4">
+                <span class="subtitle" style="color:#ed3532;">Special Promotions</span>
+                <h2 class="title" style="color:#1b2954;">Latest Offers & Announcements</h2>
+            </div>
+
+            <div class="swiper myAdBannerSwiper">
+                <div class="swiper-wrapper">
+                    @foreach($banners as $banner)
+                        <div class="swiper-slide">
+                            <div class="banner-item shadow-sm rounded overflow-hidden">
+                                <img src="{{ asset('storage/' . $banner->image) }}"
+                                    alt="Banner Image"
+                                    class="w-100"
+                                    style="height: 500px; object-fit: cover;">
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swiper Init -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            new Swiper(".myAdBannerSwiper", {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                breakpoints: {
+                    768: { slidesPerView: 2 },
+                    1200: { slidesPerView: 3 }
+                }
+            });
+        });
+    </script>
+
+
+
+
     <!-- course section start here -->
     <div class="course-section padding-tb section-bg">
         <div class="container">
@@ -254,67 +620,6 @@
     <!-- course section ending here -->
 
 
-
-    <!-- abouts section start here -->
-    <div class="about-section">
-        <div class="container">
-            <div class="row justify-content-center row-cols-xl-2 row-cols-1 align-items-end flex-row-reverse">
-                <!-- Right Side Content -->
-                <div class="col">
-                    <div class="about-right padding-tb">
-                        <div class="section-header">
-                            <span class="subtitle" style="color:#ed3532;">About DSA Academy</span>
-                            <h2 class="title" style="color:#1b2954;">Empowering Your Future With Practical Skills</h2>
-                            <p>DSA Academy is a leading education provider focused on delivering high-quality, practical training in IT, business, and professional development. We empower individuals through hands-on learning, expert instructors, and industry-recognized certifications—ensuring you're ready for the real world.</p>
-                        </div>
-                        <div class="section-wrapper">
-                            <ul class="lab-ul">
-                                <li>
-                                    <div class="sr-left">
-                                        <img src="{{ asset('frontend/assets/images/instructor.png') }}" alt="Skilled Instructors">
-                                    </div>
-                                    <div class="sr-right">
-                                        <h5>Experienced Instructors</h5>
-                                        <p>Learn from industry professionals with real-world experience, passionate about teaching and mentoring.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sr-left">
-                                        <img src="{{ asset('frontend/assets/images/cetificate.png') }}" alt="Certified Courses">
-                                    </div>
-                                    <div class="sr-right">
-                                        <h5>Recognized Certifications</h5>
-                                        <p>Receive certificates that are valued by employers and recognized across industries.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sr-left">
-                                        <img src="{{ asset('frontend/assets/images/world-grid.png') }}" alt="Online Learning">
-                                    </div>
-                                    <div class="sr-right">
-                                        <h5>Online & Physical Classes</h5>
-                                        <p>Flexible learning options that fit your lifestyle—whether you're at home or on campus.</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Left Side Image -->
-                <div class="col">
-                    <div class="about-left" style="margin-bottom:200px;">
-                        <div class="about-thumb">
-                            <img src="{{ asset('frontend/assets/images/skill/skill.gif') }}" alt="DSA Academy" style="height:400px; width:auto;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- about section ending here -->
-
-
     <!-- VIP Packages Section Start -->
     <div class="course-section padding-tb section-bg">
         <div class="container">
@@ -381,166 +686,6 @@
         </div>
     </div>
     <!-- VIP Packages Section End -->
-
-
-
-<!-- Achievement section start here -->
-<div class="achievement-section padding-tb">
-    <div class="container">
-        <!-- Stats Top -->
-        <div class="section-header text-center">
-            <span class="subtitle" style="color:#ed3532;">START TO SUCCESS</span>
-            <h2 class="title" style="color:#1b2954;">Achieve Your Goals With DSA Academy</h2>
-        </div>
-
-        <div class="section-wrapper">
-            <div class="counter-part mb-5">
-                <div class="row g-4 row-cols-lg-4 row-cols-sm-2 row-cols-1 justify-content-center">
-                    <div class="col">
-                        <div class="count-item text-center">
-                            <h2><span class="count">{{ $stats['experience'] }}</span>+</h2>
-                            <p>Years of Education Experience</p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="count-item text-center">
-                            <h2><span class="count">{{ $stats['students'] }}</span>+</h2>
-                            <p>Students Trained</p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="count-item text-center">
-                            <h2><span class="count">{{ $stats['teachers'] }}</span>+</h2>
-                            <p>Expert Instructors</p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="count-item text-center">
-                            <h2><span class="count">{{ $stats['courses'] }}</span>+</h2>
-                            <p>Certified Courses</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- YouTube Section -->
-            <div class="achieve-part mt-4">
-                <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-lg-3">
-                    @forelse($youtubeVideos as $video)
-                        @php
-                            $videoId = getYoutubeVideoId($video->youtube_url);
-                            $thumbnailUrl = $video->thumbnail
-                                ? asset('storage/' . $video->thumbnail)
-                                : ($videoId ? 'https://img.youtube.com/vi/' . $videoId . '/hqdefault.jpg' : null);
-                        @endphp
-
-                        <div class="col">
-                            <div class="p-3 bg-white shadow-sm rounded-3 d-flex align-items-center h-100" style="min-height: 200px;">
-                                <!-- Thumbnail -->
-                                @if($thumbnailUrl)
-                                    <div class="me-3" style="width: 200px; height: 150px; flex-shrink: 0;">
-                                        <a href="{{ $video->youtube_url }}" target="_blank">
-                                            <img src="{{ $thumbnailUrl }}" alt="{{ $video->title }}" class="w-100 h-100 object-fit-cover rounded-2">
-                                        </a>
-                                    </div>
-                                @endif
-
-                                <!-- Text Content -->
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-2 text-dark fw-bold">{{ Str::limit($video->title, 60) }}</h6>
-                                    <a href="{{ $video->youtube_url }}" target="_blank" class="btn btn-sm btn-outline-danger">
-                                        Watch on YouTube <i class="icofont-play-alt-1"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="col-12 text-center">
-                            <p class="text-muted">No YouTube videos found.</p>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!-- Achievement section ending here -->
-
-
-
-<!-- blog section start here -->
-<div class="blog-section padding-tb section-bg">
-    <div class="container">
-        <div class="section-header text-center">
-            <span class="subtitle">FROM OUR BLOG POSTS</span>
-            <h2 class="title">More Articles From Resource Blog</h2>
-        </div>
-        <div class="section-wrapper">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center g-4">
-
-                @forelse($latestBlogs as $blog)
-                    <div class="col">
-                        <div class="post-item">
-                            <div class="post-inner">
-                                
-                                <!-- Media (Image or Video) -->
-                                <div class="post-thumb" style="height: 250px; overflow: hidden;">
-                                    @if($blog->media_type === 'image' && $blog->media_path)
-                                        <a href="#">
-                                            <img src="{{ asset('storage/' . $blog->media_path) }}" alt="{{ $blog->title }}" style="width: 100%; height: 100%; object-fit: cover;">
-                                        </a>
-                                    @elseif($blog->media_type === 'video' && $blog->media_path)
-                                        <video width="100%" height="250" controls style="object-fit: cover;">
-                                            <source src="{{ asset('storage/' . $blog->media_path) }}" type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
-                                    @else
-                                        <img src="{{ asset('frontend/assets/images/blog/default.jpg') }}" alt="default blog" style="width: 100%; height: 100%; object-fit: cover;">
-                                    @endif
-                                </div>
-
-                                <!-- Content -->
-                                <div class="post-content">
-                                    <a href="#"><h4>{{ Str::limit($blog->title, 60) }}</h4></a>
-
-                                    <div class="meta-post">
-                                        <ul class="lab-ul">
-                                            <i class="icofont-ui-user p-2" ></i>DSA Academy
-                                            <i class="icofont-calendar m-3"></i>{{ $blog->created_at->format('F d, Y') }}
-                                        </ul>
-                                    </div>
-
-                                    <p>{{ Str::limit(strip_tags($blog->content), 120) }}</p>
-                                </div>
-
-                                <!-- Footer -->
-                                <div class="post-footer">
-                                    <div class="pf-left">
-                                        <a href="#" class="lab-btn-text">
-                                            Read more <i class="icofont-external-link"></i>
-                                        </a>
-                                    </div>
-                                    <div class="pf-right">
-                                        <i class="icofont-comment"></i>
-                                        <span class="comment-count">0</span> {{-- Optional: Dynamic comment count --}}
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="col-12 text-center">
-                        <p class="text-muted">No blog posts found.</p>
-                    </div>
-                @endforelse
-
-            </div>
-        </div>
-    </div>
-</div>
-<!-- blog section ending here -->
 
 
 

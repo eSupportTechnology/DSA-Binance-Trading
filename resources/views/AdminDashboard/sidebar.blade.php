@@ -18,7 +18,7 @@
                 <ul class="sidebar-links" id="simple-bar">
                     <li class="back-btn">
                         <a href="{{ route('admin') }}">
-                            <img class="img-fluid" src="{{ asset('assets/images/logo/logo-icon.png') }}" alt="">
+                            <img class="img-fluid" src="{{ asset('frontend/assets/images/logo.png') }}" alt="">
                         </a>
                         <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
                     </li>
@@ -46,10 +46,11 @@
                         </ul>
                     </li>
 
+                    <!-- Booking Requests -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="#">
-                            <i class="fa fa-book"></i>
-                            <span>Order Management</span>
+                        <i class="fa fa-file-text"></i> <!-- Corrected Icon -->
+                            <span>Booking Requests</span>
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('admin.orders.pending') }}">Pending Orders</a></li>
@@ -57,7 +58,6 @@
                             <li><a href="{{ route('admin.orders.success') }}">Success Orders</a></li>
                         </ul>
                     </li>
-
 
                     <!-- Course Management -->
                     <li class="sidebar-list">
@@ -71,7 +71,19 @@
                         </ul>
                     </li>
 
-                    <!-- Course Management -->
+                    <!-- Batches -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-list-alt"></i>
+                            <span>Batches</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.batches.index') }}">All Batches</a></li>
+                            <li><a href="{{ route('admin.batches.create') }}">Add New Batch</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Course File Management -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
                             <i class="fa fa-folder-open"></i> <!-- Corrected Icon -->
@@ -91,18 +103,6 @@
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('branches.index') }}">All Branches</a></li>
                             <li><a href="{{ route('branches.create') }}">Create Branches</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Booking Requests -->
-                    <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title" href="#">
-                        <i class="fa fa-file-text"></i> <!-- Corrected Icon -->
-                            <span>Booking Requests</span>
-                        </a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="{{ route('bookings.pending') }}">Pending Booking Requests</a></li>
-                            <li><a href="{{ route('bookings.approved') }}">Approved Booking Requests</a></li>
                         </ul>
                     </li>
 
@@ -152,6 +152,19 @@
                         </ul>
                     </li>
 
+                    <!-- Ad Banners -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-image"></i>
+                            <span>Ad Banners</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.adbanners.index') }}">All Banners</a></li>
+                            <li><a href="{{ route('admin.adbanners.create') }}">Add New Banner</a></li>
+                        </ul>
+                    </li>
+
+
                     <!-- Settings -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="#">
@@ -160,8 +173,10 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('admin.banners.index') }}">Manage Banners</a></li>
+                            <li><a href="{{ route('admin.employees.index') }}">Manage Employees</a></li>
                         </ul>
                     </li>
+
 
                     
                 </ul>

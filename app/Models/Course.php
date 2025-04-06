@@ -54,4 +54,10 @@ class Course extends Model
     {
         return $this->hasMany(Booking::class, 'course_id', 'course_id');
     }
+
+    public function batches()
+    {
+        return $this->hasMany(Batch::class, 'course_id', 'course_id');
+    }
+
 }

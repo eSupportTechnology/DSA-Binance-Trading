@@ -17,6 +17,8 @@ use App\Http\Controllers\YoutubeVideoController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\VipPackageBookingController;
+use App\Http\Controllers\EmployeeAuthController;
+use App\Http\Controllers\EmployeeController;
 
 // Verification notice
 Route::get('/email/verify', function () {
@@ -87,6 +89,8 @@ Route::post('/customer/register', [CustomerAuthController::class, 'register'])->
 Route::get('/customer/login', [CustomerAuthController::class, 'showLogin'])->name('customer.login');
 Route::post('/customer/login', [CustomerAuthController::class, 'login'])->name('customer.login.submit');
 Route::post('/customer/logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
+Route::get('/register/old', [CustomerAuthController::class, 'showOldRegisterForm'])->name('customer.old.register');
+Route::post('/register/old', [CustomerAuthController::class, 'submitOldRegister'])->name('customer.old.register.submit');
 
 
 Route::get('/verify-code', [CustomerAuthController::class, 'showCodeForm'])->name('customer.verify.code.form');
@@ -114,6 +118,35 @@ require __DIR__.'/auth.php';
 
 
 //admindashboard
+
+// Admin Login
+Route::get('/admin/login', [EmployeeAuthController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [EmployeeAuthController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/logout', [EmployeeAuthController::class, 'logout'])->name('admin.logout');
+Route::get('/admin/register', [EmployeeAuthController::class, 'showRegisterForm'])->name('admin.register');
+Route::post('/admin/register', [EmployeeAuthController::class, 'register'])->name('admin.register.submit');
+
+
+// Employee Management Routes
+Route::prefix('admin/employees')->name('admin.employees.')->group(function () {
+    Route::get('/', [EmployeeController::class, 'index'])->name('index'); // List employees
+    Route::get('/create', [EmployeeController::class, 'create'])->name('create'); // Show form
+    Route::post('/', [EmployeeController::class, 'store'])->name('store'); // Save employee
+
+    Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('edit'); // Edit form
+    Route::put('/{employee}', [EmployeeController::class, 'update'])->name('update'); // Update employee
+
+    Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('destroy'); // Delete employee
+});
+
+
+// Dashboard (protected)
+Route::middleware(['auth:employee'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('AdminDashboard.home');
+    })->name('admin.dashboard');
+});
+
 
 Route::get('/admin', [BackendTemplateController::class, 'index'])->name('admin.dashboard');
 
@@ -259,7 +292,31 @@ Route::prefix('admin/orders')->name('admin.orders.')->group(function () {
 });
 
 
+use App\Http\Controllers\AdBannerController;
+// adbanners
+Route::prefix('admin/adbanners')->name('admin.adbanners.')->group(function () {
+    Route::get('/', [AdBannerController::class, 'index'])->name('index');
+    Route::get('/create', [AdBannerController::class, 'create'])->name('create');
+    Route::post('/', [AdBannerController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [AdBannerController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [AdBannerController::class, 'update'])->name('update');
+    Route::delete('/{id}', [AdBannerController::class, 'destroy'])->name('destroy');
+});
 
+
+use App\Http\Controllers\BatchController;
+
+// Batches
+Route::prefix('admin/batches')->name('admin.batches.')->group(function () {
+    Route::get('/', [BatchController::class, 'index'])->name('index');
+    Route::get('/create', [BatchController::class, 'create'])->name('create');
+    Route::post('/', [BatchController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [BatchController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [BatchController::class, 'update'])->name('update');
+    Route::delete('/{id}', [BatchController::class, 'destroy'])->name('destroy');
+});
+
+//-----------------------student dashboard
 
 use App\Http\Controllers\StudentDashboardController;
 

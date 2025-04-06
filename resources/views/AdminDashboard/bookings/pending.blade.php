@@ -17,7 +17,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <div class="card">
+    <div class="card mt-3">
         <div class="card-header">
             <h5>Pending Booking Requests</h5>
         </div>

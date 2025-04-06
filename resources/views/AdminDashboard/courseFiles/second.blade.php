@@ -31,8 +31,8 @@
                                 <tr>
                                     <th>#</th>
                                     <th>File Name</th>
-                                    <th>File Path</th>
                                     <th>File Type</th>
+                                    <th>Available Batches</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -40,11 +40,18 @@
                                 @foreach ($files as $file)
                                     <tr>
                                         <td>{{ $file->file_id }}</td>
-                                        <td>{{ $file->file_name }}</td>
-                                        <td><a href="{{ asset($file->file_path) }}" target="_blank">{{ $file->file_name }}</a></td>
+                                        <td>
+                                            <a href="{{ asset($file->file_path) }}" target="_blank">
+                                                {{ $file->file_name }}
+                                            </a>
+                                        </td>
                                         <td>{{ $file->file_type }}</td>
                                         <td>
-
+                                            @foreach ($file->batches as $batch)
+                                                <span class="badge bg-info">{{ $batch->name }}</span>
+                                            @endforeach
+                                        </td>
+                                        <td>
                                             <form action="{{ route('courseFile.destroy', $file->file_id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
@@ -63,27 +70,44 @@
 
     <!-- Upload File Modal -->
     <div class="modal fade" id="uploadFileModal" tabindex="-1" aria-labelledby="uploadFileModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadFileModalLabel">Upload New File</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
                 <form action="{{ route('courseFile.store', ['courseId' => $course->course_id]) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New File</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="file_name" class="form-label">File Name</label>
-                            <input type="text" class="form-control" name="file_name" placeholder="Enter File Name" required>
+                            <input type="text" name="file_name" class="form-control" required>
                         </div>
+
                         <div class="mb-3">
                             <label for="files" class="form-label">Select Files</label>
-                            <input type="file" class="form-control" name="files[]" accept=".pdf,.docx,.txt" multiple required>
+                            <input type="file" name="files[]" class="form-control" accept=".pdf,.docx,.txt" multiple required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Assign to Batches</label>
+                            <div class="row">
+                                @foreach($course->batches as $batch)
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input type="checkbox" name="batches[]" value="{{ $batch->id }}" class="form-check-input" id="batch{{ $batch->id }}">
+                                            <label for="batch{{ $batch->id }}" class="form-check-label">{{ $batch->name }}</label>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Upload Files</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </form>
             </div>

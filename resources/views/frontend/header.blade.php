@@ -14,15 +14,17 @@ a {
     text-decoration: underline; 
 }
 .signup {
-    background-color: white;
     border: 1px solid white; 
-    color: #003366 !important; 
+    color: white !important; 
     font-size: 14px; 
     padding: 5px 20px; 
     border-radius: 20px; 
     text-transform: uppercase;
     margin-left:10px;
 }
+
+
+
 .signup:hover {
     background-color:rgb(4, 40, 75);
     color: #ee1831 !important;  
@@ -137,7 +139,7 @@ a {
         </li>
     @else
         <li><a href="{{ route('customer.login') }}" class="login"><i class="icofont-user"></i> LOG IN</a></li>
-        <li><a href="{{ route('customer.register') }}" class="signup"><i class="icofont-users"></i> SIGN UP</a></li>
+        <li><a href="{{ route('customer.register') }}" class="signup"><i class="icofont-users" "></i> SIGN UP</a></li>
     @endif
 
 </ul>

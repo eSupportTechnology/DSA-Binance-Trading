@@ -7,6 +7,8 @@ use App\Models\Course;
 use App\Models\VipPackage;
 use App\Models\Blog;
 use App\Models\YoutubeVideo;
+use App\Models\Review;
+use App\Models\AdBanner;
 
 class FrontendTemplateController extends Controller
 {
@@ -16,6 +18,8 @@ class FrontendTemplateController extends Controller
         $vipPackages = VipPackage::where('status', 'active')->latest()->get();
         $latestBlogs = Blog::where('status', true)->latest()->take(3)->get();
         $youtubeVideos = YoutubeVideo::latest()->take(3)->get();
+        $reviews = Review::where('status', 'approved')->latest()->get();
+        $banners = AdBanner::where('status', true)->latest()->get();
 
         // Real stats (you can use actual counts)
         $stats = [
@@ -27,8 +31,9 @@ class FrontendTemplateController extends Controller
 
 
         return view('frontend.Home', compact('featuredCourses','vipPackages' , 'latestBlogs', 'youtubeVideos',
-        'stats'));
+        'stats','reviews','banners'));
     }
+
     public function Home_Two()
     {
         return view('frontend.Home_Two');

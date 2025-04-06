@@ -11,17 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reviews', function (Blueprint $table) {
+        Schema::create('batches', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('course_id');
-            $table->string('student_name');
-            $table->integer('rating');
-            $table->text('comment');
-            $table->string('image')->nullable();
-            $table->enum('status', ['pending', 'approved'])->default('pending');
+            $table->string('name'); // Batch 01, 02...
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->timestamps();
         
-            // Use course_id and point to courses.course_id
             $table->foreign('course_id')->references('course_id')->on('courses')->onDelete('cascade');
         });
         
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('batches');
     }
 };

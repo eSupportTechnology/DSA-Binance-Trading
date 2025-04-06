@@ -68,7 +68,6 @@ class CustomerAuthController extends Controller
 
     public function verifyCode(Request $request)
     {
-        //dd($request);
         $request->validate(['code' => 'required|numeric']);
 
         $data = session('pending_customer');
@@ -76,10 +75,32 @@ class CustomerAuthController extends Controller
         if (!$data || $data['verification_code'] != $request->code) {
             return back()->with('error', 'Invalid or expired code.');
         }
-    
-        $nextId = Customer::max('user_id') + 1; // use 'id' or your actual PK column
-        $stuId = 'DSA' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
 
+        // 🔍 Check if it's an old student
+        if (!empty($data['student_id'])) {
+            $studentId = $data['student_id'];
+
+            // ✅ Validate format DSAxxxx
+            if (!preg_match('/^DSA\d{4}$/', $studentId)) {
+                return back()->with('error', 'Invalid Student ID format. Must be like DSA0049.');
+            }
+
+            // ✅ Validate it's < DSA0500
+            $numericPart = (int)substr($studentId, 3);
+            if ($numericPart >= 500) {
+                return back()->with('error', 'Old student ID must be less than DSA0500.');
+            }
+
+            $stuId = $studentId;
+        } else {
+            // 🆕 New student ID generation starts from 0500
+            $lastId = Customer::orderByDesc('user_id')->first()?->stu_id ?? 'DSA0499';
+            $lastNumber = (int)substr($lastId, 3);
+            $nextNumber = max(500, $lastNumber + 1);
+            $stuId = 'DSA' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+        }
+
+        // 🧾 Save customer
         $customer = Customer::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -89,11 +110,12 @@ class CustomerAuthController extends Controller
             'status' => 1,
             'stu_id' => $stuId,
         ]);
-    
+
         session()->forget('pending_customer');
 
         return redirect()->route('customer.login')->with('success', 'Registration complete. Please log in.');
     }
+
 
 
     public function sendSMS($mobile, $message)
@@ -150,4 +172,42 @@ class CustomerAuthController extends Controller
         Session::forget(['customer_id', 'customer_name']);
         return redirect()->route('customer.login')->with('success', 'Logged out successfully.');
     }
+
+
+    public function showOldRegisterForm()
+    {
+        return view('frontend.old-register');
+    }
+
+    public function submitOldRegister(Request $request)
+    {
+        //dd($request);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:customers,email',
+            'contact_number' => 'required|string|unique:customers,contact_number|max:20',
+            'student_id' => 'required|string|max:100',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $code = rand(100000, 999999);
+
+        session([
+            'pending_customer' => [
+                'name' => $request->name,
+                'email' => $request->email,
+                'contact_number' => $request->contact_number,
+                'password' => Hash::make($request->password),
+                'verification_code' => $code,
+                'student_id' => $request->student_id,
+            ]
+        ]);
+
+        // Send OTP SMS
+        $this->sendSMS($request->contact_number, "Your DSA Academy verification code is: $code");
+
+        return redirect()->route('customer.verify.code.form')->with('success', 'Verification code sent.');
+    }
+
+
 }

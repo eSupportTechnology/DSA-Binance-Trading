@@ -30,7 +30,6 @@
                     <thead class="table-light">
                         <tr>
                             <th>#</th>
-                            <th>Course</th>
                             <th>Student</th>
                             <th>Rating</th>
                             <th>Comment</th>
@@ -43,7 +42,6 @@
                         @forelse($reviews as $index => $review)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $review->course->name ?? 'N/A' }}</td>
                                 <td>{{ $review->student_name }}</td>
                                 <td>
                                     @for($i = 1; $i <= 5; $i++)

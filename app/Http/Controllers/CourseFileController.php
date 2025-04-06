@@ -21,45 +21,52 @@ class CourseFileController extends Controller
     //show files & Documents
     public function second($courseId)
     {
-        $course = Course::findOrFail($courseId);
+        $course = Course::with('batches')->findOrFail($courseId);
         $files = CourseFile::where('course_id', $courseId)->get();
         return view('AdminDashboard.courseFiles.second', compact('course', 'files'));
     }
 
     public function store(Request $request, $courseId)
-    {
-        $request->validate([
-            'file_name' => 'required|string|max:255',
-            'files' => 'required',
-            'files.*' => 'mimes:pdf,docx,txt',
-        ]);
+{
+    $request->validate([
+        'file_name' => 'required|string|max:255',
+        'files' => 'required',
+        'files.*' => 'mimes:pdf,docx,txt',
+        'batches' => 'required|array', // ensure batches are passed as array
+        'batches.*' => 'exists:batches,id', // validate batch IDs
+    ]);
 
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                $originalName = $file->getClientOriginalName();
-                $extension = $file->getClientOriginalExtension();
-                $fileName = time() . '_' . $originalName;
+    if ($request->hasFile('files')) {
+        foreach ($request->file('files') as $file) {
+            $originalName = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $fileName = time() . '_' . $originalName;
 
-                // Upload path like: public/uploads/courses/{id}/files
-                $uploadPath = public_path("uploads/courses/{$courseId}/files");
+            // Upload path like: public/uploads/courses/{id}/files
+            $uploadPath = public_path("uploads/courses/{$courseId}/files");
 
-                if (!file_exists($uploadPath)) {
-                    mkdir($uploadPath, 0777, true);
-                }
-
-                $file->move($uploadPath, $fileName);
-
-                CourseFile::create([
-                    'course_id'   => $courseId,
-                    'file_name'   => $request->file_name,
-                    'file_path'   => "uploads/courses/{$courseId}/files/{$fileName}",
-                    'file_type'   => $extension,
-                ]);
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
             }
-        }
 
-        return redirect()->route('courseFile.second', $courseId)->with('success', 'Files uploaded successfully.');
+            $file->move($uploadPath, $fileName);
+
+            // Save file
+            $newFile = CourseFile::create([
+                'course_id'   => $courseId,
+                'file_name'   => $request->file_name,
+                'file_path'   => "uploads/courses/{$courseId}/files/{$fileName}",
+                'file_type'   => $extension,
+            ]);
+
+            // Attach file to selected batches
+            $newFile->batches()->attach($request->batches);
+        }
     }
+
+    return redirect()->route('courseFile.second', $courseId)->with('success', 'Files uploaded and assigned to batches successfully.');
+}
+
 
 
     public function destroy($fileId)

@@ -1,11 +1,11 @@
-<!-- footer -->
+<!-- Footer -->
 <div class="news-footer-wrap">
     <div class="fs-shape">
-        <img src="{{ asset('frontend/assets/images/shape-img/03.png') }}" alt="fst" class="fst-1">
-        <img src="{{ asset('frontend/assets/images/shape-img/04.png') }}" alt="fst" class="fst-2">
+        <img src="{{ asset('frontend/assets/images/shape-img/03.png') }}" alt="shape" class="fst-1">
+        <img src="{{ asset('frontend/assets/images/shape-img/04.png') }}" alt="shape" class="fst-2">
     </div>
 
-    <!-- Newsletter Section -->
+    <!-- Newsletter -->
     <div class="news-letter">
         <div class="container">
             <div class="section-wrapper">
@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <!-- Footer Section -->
+    <!-- Main Footer -->
     <footer>
         <div class="footer-top padding-tb pt-0">
             <div class="container">
@@ -34,7 +34,7 @@
                     <div class="col pr-5">
                         <div class="footer-item">
                             <div class="footer-inner text-center">
-                                <img src="{{ asset('frontend/assets/images/logo.png') }}" alt="DSA Logo" style="max-width: 150px; ">
+                                <img src="{{ asset('frontend/assets/images/logo.png') }}" alt="DSA Logo" style="max-width: 150px;">
                                 <p class="mt-3 text-muted">DSA Academy is your trusted partner for mastering Forex & Crypto trading with top-tier guidance.</p>
                             </div>
                         </div>
@@ -45,16 +45,15 @@
                         <div class="footer-item">
                             <div class="footer-inner">
                                 <div class="footer-content">
-                                    <div class="title">
-                                        <h4>Useful Links</h4>
-                                    </div>
+                                    <div class="title"><h4>Useful Links</h4></div>
                                     <div class="content">
                                         <ul class="lab-ul">
-                                            <li><a href="{{ url('/') }}">Home</a></li>
-                                            <li><a >Courses</a></li>
-                                            <li><a >VIP Packages</a></li>
-                                            <li><a >Blog</a></li>
-                                            <li><a >Contact Us</a></li>
+                                            
+                                            <li><a href="{{ route('frontend.Course') }}">Courses</a></li>
+                                            <li><a href="{{ route('frontend.vip.packages') }}">VIP Packages</a></li>
+                                            <li><a href="{{ route('frontend.blog_style3') }}">Blog</a></li>
+                                            <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
+                                            <li><a href="{{ route('frontend.about') }}">About Us</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -62,20 +61,18 @@
                         </div>
                     </div>
 
-                    <!-- Social Media -->
+                    <!-- Social Links -->
                     <div class="col">
                         <div class="footer-item">
                             <div class="footer-inner">
                                 <div class="footer-content">
-                                    <div class="title">
-                                        <h4>Follow Us</h4>
-                                    </div>
+                                    <div class="title"><h4>Follow Us</h4></div>
                                     <div class="content">
                                         <ul class="lab-ul">
-                                            <li><a href="#"><i class="icofont-facebook"></i> Facebook</a></li>
-                                            <li><a href="#"><i class="icofont-twitter"></i> Twitter</a></li>
+                                            <li><a href="https://www.facebook.com/share/1B8Hty84zo/?mibextid=wwXIfr" target="_blank"><i class="icofont-facebook"></i> Facebook</a></li>
+                                            <li><a href="https://youtube.com/@dsaacademylk?si=wYkBGSyTYsxDbKAr" target="_blank"><i class="icofont-youtube"></i> YouTube</a></li>
+                                            <li><a href="https://www.tiktok.com/@dsa_academy?_t=ZS-8uwiQdxgMmO&_r=1" target="_blank"><i class="icofont-twitch"></i> TikTok</a></li>
                                             <li><a href="#"><i class="icofont-instagram"></i> Instagram</a></li>
-                                            <li><a href="#"><i class="icofont-youtube"></i> YouTube</a></li>
                                             <li><a href="#"><i class="icofont-brand-whatsapp"></i> WhatsApp</a></li>
                                         </ul>
                                     </div>
@@ -89,9 +86,7 @@
                         <div class="footer-item">
                             <div class="footer-inner">
                                 <div class="footer-content">
-                                    <div class="title">
-                                        <h4>Support</h4>
-                                    </div>
+                                    <div class="title"><h4>Support</h4></div>
                                     <div class="content">
                                         <ul class="lab-ul">
                                             <li><a href="#">Help Center</a></li>
@@ -120,4 +115,4 @@
         </div>
     </footer>
 </div>
-<!-- footer -->
+<!-- End Footer -->

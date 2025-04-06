@@ -13,7 +13,7 @@ class ReviewController extends Controller
     // Show all reviews
     public function index()
     {
-        $reviews = Review::with('course')->latest()->paginate(10);
+        $reviews = Review::latest()->paginate(10);
         return view('AdminDashboard.reviews.index', compact('reviews'));
     }
 
@@ -28,12 +28,11 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'course_id' => 'required|exists:courses,course_id',
             'student_name' => 'required|string|max:255',
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string',
             'status' => 'required|in:pending,approved',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $imagePath = null;
@@ -42,12 +41,11 @@ class ReviewController extends Controller
         }
 
         Review::create([
-            'course_id' => $request->course_id,
             'student_name' => $request->student_name,
-            'rating' => $request->rating,
-            'comment' => $request->comment,
-            'status' => $request->status,
-            'image' => $imagePath,
+            'rating'       => $request->rating,
+            'comment'      => $request->comment,
+            'status'       => $request->status,
+            'image'        => $imagePath,
         ]);
 
         return redirect()->route('admin.reviews.index')->with('success', 'Review added successfully.');
@@ -69,16 +67,22 @@ class ReviewController extends Controller
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string',
             'status' => 'required|in:pending,approved',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $review = Review::findOrFail($id);
 
-        $review->update([
-            'student_name' => $request->student_name,
-            'rating' => $request->rating,
-            'comment' => $request->comment,
-            'status' => $request->status,
-        ]);
+        $data = $request->only(['student_name', 'rating', 'comment', 'status']);
+
+        // Image update logic
+        if ($request->hasFile('image')) {
+            if ($review->image && Storage::disk('public')->exists($review->image)) {
+                Storage::disk('public')->delete($review->image);
+            }
+            $data['image'] = $request->file('image')->store('reviews', 'public');
+        }
+
+        $review->update($data);
 
         return redirect()->route('admin.reviews.index')->with('success', 'Review updated successfully.');
     }

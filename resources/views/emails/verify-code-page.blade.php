@@ -28,7 +28,7 @@
 <div class="login-section padding-tb section-bg">
     <div class="container">
         <div class="account-wrapper">
-            <h3 class="title">Enter the 6-digit code sent to your email</h3>
+            <h3 class="title">Enter the 4-digit code sent to your Mobile</h3>
 
             @if(session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
@@ -55,9 +55,7 @@
                 </div>
             </form>
 
-            <div class="account-bottom text-center mt-3">
-                <p>Didn’t receive the code? <a href="#">Resend</a></p>
-            </div>
+            
         </div>
     </div>
 </div>

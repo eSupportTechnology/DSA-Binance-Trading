@@ -18,9 +18,13 @@ class CourseFile extends Model
         'file_type',
     ];
 
-    // Relationship with Course
-    public function course()
+    // app/Models/CourseFile.php
+
+    public function batches()
     {
-        return $this->belongsTo(Course::class, 'course_id', 'course_id');
+        return $this->belongsToMany(Batch::class, 'course_file_batch', 'course_file_id', 'batch_id');
     }
+
+
+
 }

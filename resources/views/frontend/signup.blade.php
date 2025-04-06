@@ -46,7 +46,7 @@
                 <form class="account-form"  action="{{ route('customer.register.submit') }}" method="POST">
                     @csrf
                     <div class="form-group">
-                        <input type="text" placeholder="User Name" name="name">
+                        <input type="text" placeholder="Full Name" name="name">
                     </div>
                     <div class="form-group">
                         <input type="text" placeholder="Email" name="email">
@@ -65,6 +65,14 @@
                         <button class="lab-btn"><span>Get Started Now</span></button>
                     </div>
                 </form>
+                
+
+                <span class="d-block cate">Are you an old student? 
+                    <a href="{{ route('customer.old.register') }}" class="text-primary fw-bold">Click Here</a>
+                </span>
+
+                <hr class="my-3">
+                
                 <div class="account-bottom">
                     <span class="d-block cate pt-10">Are you a member? <a href="{{ route('customer.login') }}">Login</a></span>
                     

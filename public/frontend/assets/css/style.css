@@ -8718,13 +8718,7 @@ button {
     }
 }
 
-.student-feedbak-section::before {
-    width: 50%;
-    height: 100%;
-    top: 0;
-    border-bottom: 786px solid #ee1831;
-    border-right: 960px solid transparent;
-}
+
 @media (min-width: 1440px) {
     .student-feedbak-section::before {
         display: block;

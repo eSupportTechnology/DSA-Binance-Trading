@@ -18,8 +18,9 @@ class CourseRecording extends Model
         'description'
     ];
 
-    public function batch()
+    public function batches()
     {
-        return $this->belongsTo(Batch::class);
+        return $this->belongsToMany(Batch::class, 'course_recording_batch', 'course_recording_id', 'batch_id');
     }
+
 }

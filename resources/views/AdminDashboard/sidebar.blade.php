@@ -1,14 +1,16 @@
 <!-- Page Sidebar Start -->
 <div class="sidebar-wrapper" sidebar-layout="stroke-svg">
     <div>
+        <!-- Logo Section -->
         <div class="logo-wrapper">
-            <a href="index.html">
-                <img class="img-fluid for-light" src="frontend/assets/images/logo/logo.png" alt="">
-                <img class="img-fluid for-dark" src="frontend/assets/images/logo/logo_dark.png" alt="">
+            <a href="{{ route('customer.dashboard') }}">
+                <img class="img-fluid for-light" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo">
+                <img class="img-fluid for-dark" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo Dark">
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
-            <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="grid"></i></div>
+            
         </div>
+
         <div class="logo-icon-wrapper">
             <a href="index.html"><img class="img-fluid" src="frontend/assets/images/logo/logo-icon.png" alt=""></a>
         </div>
@@ -24,7 +26,7 @@
                     </li>
 
                     <!-- Dashboard -->
-                    <li class="sidebar-list">
+                    <li class="sidebar-list mt-5">
                         <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>

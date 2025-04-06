@@ -8,11 +8,11 @@
             <div class="page-title">
               <div class="row">
                 <div class="col-6">
-                  <h2>Welcome, {{ session('customer_name') }}</h2>
+                  
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">                                       
+                    <li class="breadcrumb-item"><a>                                       
                         <svg class="stroke-icon">
                           <use href="{{ asset('backend/assets/svg/icon-sprite.svg#stroke-home') }}"></use>
                         </svg></a></li>

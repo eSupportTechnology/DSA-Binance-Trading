@@ -34,10 +34,22 @@
             
             <!-- 🔰 Ad Banner (Top Horizontal) -->
             <div class="mb-4 text-center">
-                <a href="https://example.com" target="_blank">
-                    <img src="{{ asset('frontend/assets/images/ad-banner.jpg') }}" alt="Ad Banner" class="img-fluid rounded shadow-sm" style="max-height: 150px; object-fit: cover;">
-                </a>
+                @if (!empty($bannerImage)) {{-- Pass $bannerImage from controller --}}
+                    <a href="{{ $bannerLink ?? '#' }}" target="_blank">
+                        <img src="{{ asset($bannerImage) }}" alt="Ad Banner" class="img-fluid rounded shadow-sm"
+                            style="max-height: 150px; width: 100%; object-fit: cover;">
+                    </a>
+                @else
+                    <div class="p-4 bg-light rounded shadow-sm border text-center">
+                        <h5 class="mb-1">📢 Want your banner here?</h5>
+                        <p class="mb-0">Contact us to feature your brand or announcement.</p>
+                        <a href="{{ route('frontend.contact') }}" class="btn btn-outline-primary mt-2 btn-sm">
+                            Contact Us
+                        </a>
+                    </div>
+                @endif
             </div>
+
 
             <div class="row g-4 justify-content-center">
                 @foreach ($courses as $course)

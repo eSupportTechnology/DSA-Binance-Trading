@@ -18,10 +18,11 @@ class CourseZoomLink extends Model
         'description',
     ];
 
-    // Relationship with Course
-    public function course()
+    // In CourseZoomLink.php
+    public function batches()
     {
-        return $this->belongsTo(Course::class, 'course_id', 'course_id');
+        return $this->belongsToMany(Batch::class, 'course_zoom_link_batch', 'course_zoom_link_id', 'batch_id');
     }
+
 }
 

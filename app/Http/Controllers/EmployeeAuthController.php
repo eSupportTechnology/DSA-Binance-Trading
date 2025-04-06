@@ -12,13 +12,36 @@ class EmployeeAuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('admin.auth.login');
+        return view('AdminDashboard.employees.login');
     }
 
     public function showRegisterForm()
     {
         return view('admin.auth.register');
     }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::guard('employee')->attempt($credentials)) {
+            $request->session()->regenerate();
+
+            // ✅ Set session value manually
+            $employee = Auth::guard('employee')->user();
+            session(['employee' => $employee]);
+
+            return redirect()->route('admin.dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'Invalid credentials.',
+        ]);
+    }
+
 
     public function register(Request $request)
     {
@@ -36,28 +59,13 @@ class EmployeeAuthController extends Controller
             'role' => $request->role,
         ]);
 
-        Auth::guard('employee')->login($employee);
+        Auth::guard('employees')->login($employee);
 
         return redirect()->route('admin.dashboard')->with('success', 'Admin registered successfully!');
     }
 
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
-
-        if (Auth::guard('employee')->attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('admin.dashboard');
-        }
-
-        return back()->withErrors([
-            'email' => 'Invalid credentials.',
-        ]);
-    }
+    
 
     public function logout(Request $request)
     {

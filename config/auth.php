@@ -44,10 +44,11 @@ return [
             'driver' => 'session',
             'provider' => 'customers',
         ],
-        'employee' => [  // NEW GUARD
+        'employee' => [
             'driver' => 'session',
             'provider' => 'employees',
         ],
+        
     ],
 
     /*
@@ -78,10 +79,10 @@ return [
             'model' => App\Models\Customer::class,
         ],
 
-        'employees' => [  // NEW PROVIDER
+        'employees' => [
             'driver' => 'eloquent',
             'model' => App\Models\Employee::class,
-        ],
+        ],        
 
         // 'users' => [
         //     'driver' => 'database',

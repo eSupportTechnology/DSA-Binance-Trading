@@ -148,7 +148,11 @@ Route::middleware(['auth:employee'])->group(function () {
 });
 
 
+
 Route::get('/admin', [BackendTemplateController::class, 'index'])->name('admin.dashboard');
+
+
+
 
 Route::get('/adminksjjd', [BackendTemplateController::class, 'indexasdasd'])->name('admin');
 
@@ -179,6 +183,7 @@ Route::prefix('coursesFiles')->group(function () {
     Route::get('/', [CourseFileController::class, 'index'])->name('courseFile.index');
     Route::get('/courses/{courseId}/files', [CourseFileController::class, 'second'])->name('courseFile.second');
     Route::get('/create', [CourseFileController::class, 'create'])->name('courseFile.create');
+    Route::put('/admin/course-files/{id}/update', [CourseFileController::class, 'update'])->name('courseFile.update');
     Route::post('/courses/{courseId}/files', [CourseFileController::class, 'store'])->name('courseFile.store');
     Route::delete('/{id}', [CourseFileController::class, 'destroy'])->name('courseFile.destroy');
 });
@@ -187,6 +192,7 @@ Route::prefix('coursesFiles')->group(function () {
 Route::prefix('coursesRecording')->group(function () {
     Route::get('/courses/{courseId}/files', [CourseRecordingController::class, 'index'])->name('coursesRecording.index');
     Route::post('/courses/{courseId}/files', [CourseRecordingController::class, 'store'])->name('coursesRecording.store');
+    Route::put('/course/course-Recordings/{id}/update', [CourseRecordingController::class, 'update'])->name('coursesRecording.update');
     Route::delete('/{id}', [CourseRecordingController::class, 'destroy'])->name('coursesRecording.destroy');
 });
 
@@ -195,6 +201,7 @@ Route::prefix('coursesRecording')->group(function () {
 Route::prefix('coursesZoomLinks')->group(function () {
     Route::get('/courses/{courseId}/files', [CourseZoomLinkController::class, 'index'])->name('coursesZoomLinks.index');
     Route::post('/courses/{courseId}/files', [CourseZoomLinkController::class, 'store'])->name('coursesZoomLinks.store');
+    Route::put('/course/ZoomLinks/{id}/update', [CourseZoomLinkController::class, 'update'])->name('coursesZoomLinks.update');
     Route::delete('/{id}', [CourseZoomLinkController::class, 'destroy'])->name('coursesZoomLinks.destroy');
 });
 
@@ -289,6 +296,8 @@ Route::prefix('admin/orders')->name('admin.orders.')->group(function () {
     Route::get('/half', [BackendTemplateController::class, 'halfPaidOrders'])->name('half'); // ✅ MOVE THIS HERE
     Route::get('/{id}', [BackendTemplateController::class, 'showOrder'])->name('show');
     Route::patch('/{id}/status/{status}', [BackendTemplateController::class, 'updateOrderStatus'])->name('updateStatus');
+    Route::put('/admin/orders/update-booking/{id}', [BackendTemplateController::class, 'updateBooking'])->name('updateBooking');
+
 });
 
 
@@ -329,14 +338,12 @@ Route::middleware(['web'])->group(function () {
 Route::get('/student/bookings', [StudentDashboardController::class, 'bookings'])->name('student.bookings');
 Route::get('/student/bookings/{booking}/details', [StudentDashboardController::class, 'courseDetails'])->name('student.course.details');
 // Course File Access
-Route::get('/bookings/{booking}/files', [StudentDashboardController::class, 'courseFiles'])->name('student.course.files');
-
-// Course Video Recordings
-Route::get('/bookings/{booking}/recordings', [StudentDashboardController::class, 'courseRecordings'])->name('student.course.recordings');
-
-// Course Zoom Links
-Route::get('/bookings/{booking}/zoom', [StudentDashboardController::class, 'courseZoomLinks'])->name('student.course.zoom');
-
+Route::get('/student/course/{booking}/files', [StudentDashboardController::class, 'courseFiles'])->name('student.course.files');
+Route::get('/student/course/{booking}/recordings', [StudentDashboardController::class, 'courseRecordings'])->name('student.course.recordings');
+Route::get('/student/course/{booking}/zoom-links', [StudentDashboardController::class, 'courseZoomLinks'])->name('student.course.zoom');
+Route::get('/student/profile', [StudentDashboardController::class, 'profile'])->name('customer.profile');
+Route::post('/student/profile', [StudentDashboardController::class, 'updateProfile'])->name('customer.profile.update');
+Route::post('/student/profile/password', [StudentDashboardController::class, 'updatePassword'])->name('customer.password.update');
 
 
     

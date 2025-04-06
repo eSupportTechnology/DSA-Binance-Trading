@@ -23,8 +23,9 @@ class Batch extends Model
 
     public function recordings()
     {
-        return $this->hasMany(CourseRecording::class);
+        return $this->belongsToMany(CourseRecording::class, 'course_recording_batch', 'batch_id', 'course_recording_id');
     }
+
 
     public function bookings()
     {

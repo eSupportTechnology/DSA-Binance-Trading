@@ -1,22 +1,24 @@
 <!-- Page Sidebar Start -->
 <div class="sidebar-wrapper" sidebar-layout="stroke-svg">
     <div>
+        <!-- Logo Section -->
         <div class="logo-wrapper">
-            <a href="index.html">
-                <img class="img-fluid for-light" src="frontend/assets/images/logo/logo.png" alt="">
-                <img class="img-fluid for-dark" src="frontend/assets/images/logo/logo_dark.png" alt="">
+            <a href="{{ route('customer.dashboard') }}">
+                <img class="img-fluid for-light" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo">
+                <img class="img-fluid for-dark" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo Dark">
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
-            <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="grid"></i></div>
+            
         </div>
-        <div class="logo-icon-wrapper">
-            <a href="index.html"><img class="img-fluid" src="frontend/assets/images/logo/logo-icon.png" alt=""></a>
-        </div>
-        <nav class="sidebar-main">
+
+       
+
+
+        <nav class="sidebar-main ">
             <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
             <div id="sidebar-menu">
                 <ul class="sidebar-links" id="simple-bar">
-                    <li class="back-btn">
+                    <li class="back-btn-juy">
                         <a href="{{ route('admin') }}">
                             <img class="img-fluid" src="{{ asset('assets/images/logo/logo-icon.png') }}" alt="">
                         </a>
@@ -24,12 +26,16 @@
                     </li>
 
                     <!-- Dashboard -->
-                    <li class="sidebar-list">
+                    <li class="sidebar-list mt-5">
                         <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
-                            <i class="fa fa-tachometer-alt"></i> <!-- Corrected Icon -->
-                            <li><a href="{{ route('customer.dashboard') }}">Dashboard</a></li>
+                            <i class="fa fa-dashboard"></i>
+                            <span>Dashboard</span>
                         </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('customer.dashboard') }}">Dashboard</a></li>
+                        </ul>
                     </li>
+
 
                     <!-- Course Management -->
                     <li class="sidebar-list">
@@ -49,9 +55,12 @@
                             <span>Settings</span>
                         </a>
                         <ul class="sidebar-submenu">
-                            <li><a href="{{ route('admin.banners.index') }}">User Profile</a></li>
+                            <li><a href="{{ route('customer.profile') }}">User Profile</a></li>
                         </ul>
                     </li>
+
+
+                    
 
                     
                 </ul>

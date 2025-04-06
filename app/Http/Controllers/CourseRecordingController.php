@@ -11,10 +11,15 @@ class CourseRecordingController extends Controller
     // Show recordings for a specific course
     public function index($courseId)
     {
-        $course = Course::findOrFail($courseId);
-        $recordings = CourseRecording::where('course_id', $courseId)->get();
+        // Get course with its batches
+        $course = Course::with('batches')->findOrFail($courseId);
+
+        // Get recordings with their assigned batches
+        $recordings = CourseRecording::with('batches')->where('course_id', $courseId)->get();
+
         return view('AdminDashboard.courseRecordings.index', compact('course', 'recordings'));
     }
+
 
     // Store a new recording
     public function store(Request $request, $courseId)
@@ -24,17 +29,44 @@ class CourseRecordingController extends Controller
             'week_name' => 'required|string|max:100',
             'recording_url' => 'required|url',
             'description' => 'nullable|string',
+            'batches' => 'required|array',
+            'batches.*' => 'exists:batches,id',
         ]);
-
-        CourseRecording::create([
+        
+        $recording = CourseRecording::create([
             'course_id' => $courseId,
             'week_name' => $request->week_name,
             'recording_url' => $request->recording_url,
             'description' => $request->description,
         ]);
+        
+        $recording->batches()->attach($request->batches);
+        
 
         return redirect()->route('coursesRecording.index', $courseId)->with('success', 'Recording added successfully.');
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'week_name' => 'required|string|max:100',
+            'recording_url' => 'required|url',
+            'description' => 'nullable|string',
+            'batches' => 'nullable|array',
+        ]);
+
+        $recording = CourseRecording::findOrFail($id);
+        $recording->update([
+            'week_name' => $request->week_name,
+            'recording_url' => $request->recording_url,
+            'description' => $request->description,
+        ]);
+
+        $recording->batches()->sync($request->batches ?? []);
+
+        return redirect()->back()->with('success', 'Recording updated successfully.');
+    }
+
 
     // Delete a recording
     public function destroy($recordingId)

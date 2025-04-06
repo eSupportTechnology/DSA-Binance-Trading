@@ -8,15 +8,13 @@ use App\Models\Booking;
 use App\Models\CourseFile;
 use App\Models\CourseRecording;
 use App\Models\CourseZoomLink;
+use App\Models\CustomerCourseBatch;
+use Illuminate\Support\Facades\Hash;
 
 class StudentDashboardController extends Controller
 {
     public function index()
     {
-        $customerId = session('customer_id');
-
-        //$customer = Customer::with('bookings.course.files')->findOrFail($customerId);
-
         return view('StudentDashboard.home');
     }
 
@@ -24,17 +22,13 @@ class StudentDashboardController extends Controller
     {
         $customerId = session('customer_id');
 
-        $bookings = Booking::with([
-            'course.files',
-            'course.recordings',
-            'course.zoomLinks'
-        ])
-        ->where('customer_id', $customerId)
-        ->get();
+        $bookings = Booking::with('course')
+            ->where('customer_id', $customerId)
+            ->whereIn('status', ['Confirmed', 'Half']) // Only confirmed or half-paid
+            ->get();
 
         return view('StudentDashboard.course.main', compact('bookings'));
     }
-
 
     public function courseDetails($bookingId)
     {
@@ -50,37 +44,139 @@ class StudentDashboardController extends Controller
 
     public function courseFiles($bookingId)
     {
-        $booking = \App\Models\Booking::with('course.files')->findOrFail($bookingId);
+        $customerId = session('customer_id');
 
-        // Optional: check if the logged-in customer owns this booking
-        if ($booking->customer_id !== session('customer_id')) {
-            abort(403, 'Unauthorized access');
+        // Get the booking and related course
+        $booking = Booking::with('course')->where('id', $bookingId)
+            ->where('customer_id', $customerId)
+            ->firstOrFail();
+
+        // Get the customer's batch for that course
+        $customerBatch = CustomerCourseBatch::where('customer_id', $customerId)
+            ->where('course_id', $booking->course_id)
+            ->first();
+
+        if (!$customerBatch) {
+            abort(403, 'You are not assigned to a batch for this course.');
         }
 
-        return view('StudentDashboard.course.files', compact('booking'));
+        // Get course files for that course and batch
+        $files = \DB::table('course_files as cf')
+            ->join('course_file_batch as cfb', 'cf.file_id', '=', 'cfb.course_file_id')
+            ->where('cf.course_id', $booking->course_id)
+            ->where('cfb.batch_id', $customerBatch->batch_id)
+            ->select('cf.*')
+            ->get();
+
+        return view('StudentDashboard.course.files', compact('files', 'booking'));
     }
+
 
     public function courseRecordings($bookingId)
     {
-        $booking = \App\Models\Booking::with('course.recordings')->findOrFail($bookingId);
+        $customerId = session('customer_id');
 
-        if ($booking->customer_id !== session('customer_id')) {
-            abort(403);
+        // Get booking
+        $booking = Booking::with('course')->where('id', $bookingId)
+            ->where('customer_id', $customerId)
+            ->firstOrFail();
+
+        // Get customer's batch
+        $customerBatch = CustomerCourseBatch::where('customer_id', $customerId)
+            ->where('course_id', $booking->course_id)
+            ->first();
+
+        if (!$customerBatch) {
+            abort(403, 'You are not assigned to a batch for this course.');
         }
 
-        return view('StudentDashboard.course.recordings', compact('booking'));
+        // Get course recordings filtered by course and batch
+        $recordings = \DB::table('course_recordings as cr')
+            ->join('course_recording_batch as crb', 'cr.recording_id', '=', 'crb.course_recording_id')
+            ->where('cr.course_id', $booking->course_id)
+            ->where('crb.batch_id', $customerBatch->batch_id)
+            ->select('cr.*')
+            ->get();
+
+        return view('StudentDashboard.course.recordings', compact('recordings', 'booking'));
     }
 
     public function courseZoomLinks($bookingId)
     {
-        $booking = \App\Models\Booking::with('course.zoomLinks')->findOrFail($bookingId);
+        $customerId = session('customer_id');
 
-        if ($booking->customer_id !== session('customer_id')) {
-            abort(403);
+        // Get booking
+        $booking = Booking::with('course')->where('id', $bookingId)
+            ->where('customer_id', $customerId)
+            ->firstOrFail();
+
+        // Get customer's batch
+        $customerBatch = CustomerCourseBatch::where('customer_id', $customerId)
+            ->where('course_id', $booking->course_id)
+            ->first();
+
+        if (!$customerBatch) {
+            abort(403, 'You are not assigned to a batch for this course.');
         }
 
-        return view('StudentDashboard.course.zoom-links', compact('booking'));
+        // Get zoom links filtered by course and batch
+        $zoomLinks = \DB::table('course_zoom_links as czl')
+            ->join('course_zoom_link_batch as czlb', 'czl.zoom_link_id', '=', 'czlb.course_zoom_link_id')
+            ->where('czl.course_id', $booking->course_id)
+            ->where('czlb.batch_id', $customerBatch->batch_id)
+            ->select('czl.*')
+            ->get();
+
+        return view('StudentDashboard.course.zoom-links', compact('zoomLinks', 'booking'));
     }
+
+    public function profile()
+    {
+        $customerId = session('customer_id');
+        $customer = Customer::findOrFail($customerId);
+
+        return view('StudentDashboard.profile', compact('customer'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $customerId = session('customer_id');
+        $customer = Customer::findOrFail($customerId);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:customers,email,' . $customerId,
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        $customer->update($validated);
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    
+
+    public function updatePassword(Request $request)
+    {
+        $customerId = session('customer_id');
+        $customer = Customer::findOrFail($customerId);
+
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        if (!Hash::check($request->current_password, $customer->password)) {
+            return back()->with('password_error', 'Current password is incorrect.');
+        }
+
+        $customer->password = Hash::make($request->new_password);
+        $customer->save();
+
+        return back()->with('password_success', 'Password updated successfully!');
+    }
+
+
 
 
 

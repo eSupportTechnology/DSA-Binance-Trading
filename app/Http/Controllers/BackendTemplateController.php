@@ -5,13 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Booking;
+use App\Models\CustomerCourseBatch;
+use App\Services\DialogSMSService;
 
 class BackendTemplateController extends Controller
 {
     public function index()
     {
+        if (!session()->has('employee')) {
+            return redirect()->route('admin.login');
+        }
+
         return view('AdminDashboard.home');
     }
+
 
     // Show list of customers
     public function index1()
@@ -54,12 +61,14 @@ class BackendTemplateController extends Controller
 
     public function pendingOrders()
     {
-        $bookings = Booking::with(['customer', 'course'])
+        $bookings = Booking::with(['customer', 'course.batches']) // 👈 fetch batches here
             ->where('status', 'Pending')
             ->orderBy('id', 'desc')
             ->get();
+
         return view('AdminDashboard.orders.pending', compact('bookings'));
     }
+
 
     public function halfPaidOrders()
     {
@@ -94,6 +103,55 @@ class BackendTemplateController extends Controller
 
     return redirect()->back()->with('success', "Booking marked as $status successfully.");
 }
+
+
+    public function updateBooking(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:Pending,Half,Confirmed',
+            'batch_id' => 'nullable|exists:batches,id',
+        ]);
+
+        $booking = Booking::with(['course', 'customer'])->findOrFail($id);
+
+        // Update booking status
+        $booking->status = $request->status;
+        $booking->save();
+
+        // Assign or update batch for this student-course
+        if ($request->batch_id) {
+            CustomerCourseBatch::updateOrCreate([
+                'customer_id' => $booking->customer_id,
+                'course_id'   => $booking->course_id,
+            ], [
+                'batch_id' => $request->batch_id,
+            ]);
+        }
+
+        // Send SMS Notification
+        try {
+            $customer = $booking->customer;
+            $course = $booking->course;
+            $batchName = optional($course->batches->where('id', $request->batch_id)->first())->name ?? 'Batch';
+
+            $smsService = new DialogSMSService();
+
+            $message = "Hello {$customer->name},\n"
+                        . "Student ID: {$customer->stu_id}\n"
+                        . "Course: {$course->name}\n"
+                        . "Batch: {$batchName}\n\n"
+                        . "Your course is now active. You can access your course and start learning.\n"
+                        . "Thank you - DSA Academy";
+
+            $smsService->sendSMS($customer->contact_number, $message);
+        } catch (\Exception $e) {
+            \Log::error("Failed to send SMS to customer: " . $e->getMessage());
+            // Optional: you can flash a warning if needed
+        }
+
+        return redirect()->back()->with('success', 'Booking, batch and SMS updated successfully.');
+    }
+
 
 
     public function showOrder($id)

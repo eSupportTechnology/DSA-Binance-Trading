@@ -100,7 +100,10 @@ Route::post('/verify-code', [CustomerAuthController::class, 'verifyCode'])->name
 Route::middleware('web')->group(function () {
     Route::get('/course/{id}/book', [BookingController::class, 'showForm'])->name('course.booking.form');
     Route::post('/course/book', [BookingController::class, 'store'])->name('course.booking.submit');
+    Route::get('/payment/callback', [BookingController::class, 'callback'])->name('payment.callback');
+
 });
+
 Route::get('/booking/success', function () {
     return view('frontend.booking-success');
 })->name('booking.success');

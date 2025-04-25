@@ -8,6 +8,10 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
+use App\Helpers\OnepayHelper;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 
 class BookingController extends Controller
 {
@@ -30,42 +34,108 @@ class BookingController extends Controller
             'address' => 'nullable|string|max:255',
             'payment_method' => 'required|in:Card,Bank Transfer',
             'payment_status' => 'required|in:half,full',
-            'receipt_path' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'receipt_path' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
             'bank_name' => 'nullable|string|max:100',
             'bank_branch' => 'nullable|string|max:100',
             'transfer_date' => 'nullable|date',
         ]);
-
+    
         $customerId = Session::get('customer_id');
         $customer = Customer::findOrFail($customerId);
 
-        // Update customer contact & address if not already stored
+        $fullName = session('customer_name', 'Guest User');
+        $nameParts = explode(' ', $fullName);
+        $firstName = $nameParts[0] ?? 'Guest';
+        $lastName = $nameParts[1] ?? 'User';
+    
         $customer->update([
             'contact_number' => $request->contact_number,
             'address' => $request->address,
         ]);
-
-        // Handle receipt upload if Bank Transfer
+    
         $receiptPath = null;
+    
         if ($request->payment_method === 'Bank Transfer' && $request->hasFile('receipt_path')) {
             $receiptPath = $request->file('receipt_path')->store('receipts', 'public');
         }
+    
+        // 🟨 If Bank Transfer, proceed normally
+        if ($request->payment_method === 'Bank Transfer') {
+            Booking::create([
+                'customer_id'    => $customer->user_id,
+                'course_id'      => $request->course_id,
+                'payment_method' => $request->payment_method,
+                'payment_status' => $request->payment_status,
+                'receipt_path'   => $receiptPath,
+                'bank_name'      => $request->bank_name,
+                'bank_branch'    => $request->bank_branch,
+                'transfer_date'  => $request->transfer_date,
+                'status'         => 'Pending',
+            ]);
+    
+            return redirect()->route('booking.success');
+        }
+    
+        // 🟩 If Card Payment → redirect to OnePay
+        $course = Course::findOrFail($request->course_id);
+        $amount = $request->payment_status === 'full' ? $course->total_price : $course->first_payment;
+        $currency = 'LKR';
 
-        // Create Booking
-        Booking::create([
-            'customer_id'    => $customer->user_id,
-            'course_id'      => $request->course_id,
-            'payment_method' => $request->payment_method,
-            'payment_status' => $request->payment_status,
-            'receipt_path'   => $receiptPath,
-            'bank_name'      => $request->bank_name,
-            'bank_branch'    => $request->bank_branch,
-            'transfer_date'  => $request->transfer_date,
-            'status'         => 'Pending',
+        $hash = OnepayHelper::generateHash($currency, $amount);
+        $reference = 'DSA_' . uniqid();
+
+        Log::info('Initiating OnePay Payment', [
+            'amount' => $amount,
+            'reference' => $reference,
         ]);
 
-        return redirect()->route('booking.success');
+        $response = Http::withHeaders([
+            'Authorization' => config('onepay.api_key'),
+        ])->post(config('onepay.base_url') . '/checkout/link/', [
+            'currency' => $currency,
+            'app_id' => config('onepay.app_id'),
+            'hash' => $hash,
+            'amount' => $amount,
+            'reference' => $reference,
+            'customer_first_name' => $firstName,
+            'customer_last_name' => $lastName,
+            'customer_phone_number' => $customer->contact_number,
+            'customer_email' => $customer->email,
+            'transaction_redirect_url' => route('payment.callback'),
+            'additionalData' => 'course_' . $course->course_id,
+        ]);
 
+        if ($response->successful() && isset($response['data']['gateway']['redirect_url'])) {
+            $redirectUrl = $response['data']['gateway']['redirect_url'];
+
+            Log::info('Redirecting to OnePay', [
+                'url' => $redirectUrl,
+            ]);
+
+            Booking::create([
+                'customer_id'    => $customer->user_id,
+                'course_id'      => $request->course_id,
+                'payment_method' => 'Card',
+                'payment_status' => $request->payment_status,
+                'status'         => 'Payment Pending',
+                'reference'      => $reference,
+            ]);
+
+            return redirect()->away($redirectUrl);
+        }
+
+        // If failed, log full response
+        Log::error('OnePay Payment Link Failed', [
+            'response' => $response->json(),
+        ]);
+            
+        return back()->with('error', 'Failed to create OnePay link.')->withErrors($response->json());
+    }
+
+    public function callback(Request $request)
+    {
+        // You can log or show a payment confirmation page
+        return view('payment.callback', ['data' => $request->all()]);
     }
 
     public function pending()

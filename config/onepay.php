@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'app_id'     => 'QE4I11907EF1A3AD63ECB',
-    'app_token'  => 'c20410ae7aafb40327e338fe56a33b802cb78a74b1002ccf317e02e2dfc2999116ab3c5423086743.9XA711907EF1A3AD63F05',
-    'hash_salt'  => '3XYV11907EF1A3AD63EF1',
-    'api_key'    => 'c20410ae7aafb40327e338fe56a33b802cb78a74b1002ccf317e02e2dfc2999116ab3c5423086743.9XA711907EF1A3AD63F05',
+    'app_id'     => '13UC11907F660F8134E91',
+    'app_token'  => '0c7ec6b24ab80a71ace15f1e43f6a17f9916bb991336466a91cd24aa9c5b5cb10d3983d8a407ca98.77J211907F660F8134ECD',
+    'hash_salt'  => 'JTGR11907F660F8134EBA',
+    'api_key'    => '0c7ec6b24ab80a71ace15f1e43f6a17f9916bb991336466a91cd24aa9c5b5cb10d3983d8a407ca98.77J211907F660F8134ECD',
     'base_url'   => 'https://api.onepay.lk/v3',
 ];

@@ -10,7 +10,6 @@ class OnepayHelper
         $hashSalt = config('onepay.hash_salt');
         $formattedAmount = number_format($amount, 2, '.', '');
         $string = $appId . $currency . $formattedAmount . $hashSalt;
-
         return hash('sha256', $string);
     }
 }

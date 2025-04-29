@@ -101,7 +101,10 @@ Route::middleware('web')->group(function () {
     Route::get('/course/{id}/book', [BookingController::class, 'showForm'])->name('course.booking.form');
     Route::post('/course/book', [BookingController::class, 'store'])->name('course.booking.submit');
     Route::get('/payment/callback', [BookingController::class, 'callback'])->name('payment.callback');
-
+    Route::get('/booking/success', [BookingController::class, 'success'])->name('booking.success');
+    Route::get('/booking/failed', [BookingController::class, 'failed'])->name('booking.failed');
+    // Real payment notification (webhook)
+Route::post('/payment/notify', [BookingController::class, 'notify'])->name('payment.notify');
 });
 
 Route::get('/booking/success', function () {

@@ -19,6 +19,7 @@ class Booking extends Model
         'bank_name',
         'bank_branch',
         'transfer_date',
+        'reference',
     ];
 
     // Relationships (optional but useful)

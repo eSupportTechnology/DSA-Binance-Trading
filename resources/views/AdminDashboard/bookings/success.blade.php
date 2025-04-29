@@ -20,7 +20,7 @@
             <div class="container text-center mt-5">
                 <h2 class="text-success">🎉 Payment Successful!</h2>
                 <p>Your payment was processed successfully. Thank you for booking with DSA Academy.</p>
-                <a href="{{ route('home') }}" class="btn btn-primary mt-4">Go to Home</a>
+                <a href="{{ route('frontend.home') }}" class="btn btn-primary mt-4">Go to Home</a>
             </div>
         </div>
     </div>

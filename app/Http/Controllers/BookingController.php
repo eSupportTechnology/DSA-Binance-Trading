@@ -38,25 +38,25 @@ class BookingController extends Controller
             'bank_branch'      => 'nullable|string|max:100',
             'transfer_date'    => 'nullable|date',
         ]);
-    
+
         $customerId = Session::get('customer_id');
         $customer = Customer::findOrFail($customerId);
-    
+
         $fullName = session('customer_name', 'Guest User');
         $nameParts = explode(' ', $fullName);
         $firstName = $nameParts[0] ?? 'Guest';
         $lastName  = $nameParts[1] ?? 'User';
-    
+
         $customer->update([
             'contact_number' => $request->contact_number,
             'address'        => $request->address,
         ]);
-    
+
         $receiptPath = null;
         if ($request->payment_method === 'Bank Transfer' && $request->hasFile('receipt_path')) {
             $receiptPath = $request->file('receipt_path')->store('receipts', 'public');
         }
-    
+
         if ($request->payment_method === 'Bank Transfer') {
             Booking::create([
                 'customer_id'    => $customer->user_id, // ✅ should be $customer->id not user_id
@@ -69,23 +69,23 @@ class BookingController extends Controller
                 'transfer_date'  => $request->transfer_date,
                 'status'         => 'Pending',
             ]);
-    
+
             return redirect()->route('booking.success');
         }
-    
+
         // 🟢 Card Payment flow
         $course   = Course::findOrFail($request->course_id);
         $amount   = $request->payment_status === 'full' ? $course->total_price : $course->first_payment;
         $currency = 'LKR';
-    
+
         $hash      = OnepayHelper::generateHash($currency, $amount);
         $reference = 'DSA_' . uniqid();
-    
+
         Log::info('Initiating OnePay Payment', [
             'amount'    => $amount,
             'reference' => $reference,
         ]);
-    
+
         $response = Http::withHeaders([
             'Authorization' => config('onepay.api_key'),
         ])->post(config('onepay.base_url') . '/checkout/link/', [
@@ -93,20 +93,20 @@ class BookingController extends Controller
             'app_id'                 => config('onepay.app_id'),
             'hash'                   => $hash,
             'amount'                 => $amount,
-            'reference'              => $reference,
+            'reference'              => (string)$reference,
             'customer_first_name'    => $firstName,
             'customer_last_name'     => $lastName,
             'customer_phone_number'  => $customer->contact_number,
             'customer_email'         => $customer->email,
             'transaction_redirect_url' => route('payment.callback', ['reference' => $reference]), // ✅ Pass reference
-            'additionalData'         => $reference, // ✅ extra safe to store reference here too
+            'additional_data'         => (string)$reference, // ✅ extra safe to store reference here too
         ]);
-    
+
         if ($response->successful() && isset($response['data']['gateway']['redirect_url'])) {
             $redirectUrl = $response['data']['gateway']['redirect_url'];
-    
+
             Log::info('Redirecting to OnePay', ['url' => $redirectUrl]);
-    
+
             // Save booking with Pending status immediately
             Booking::create([
                 'customer_id'    => $customer->user_id,
@@ -116,15 +116,15 @@ class BookingController extends Controller
                 'reference'      => $reference,
                 'status'         => 'Pending',
             ]);
-    
+
             return redirect()->away($redirectUrl);
         }
-    
+
         Log::error('OnePay Payment Link Failed', ['response' => $response->json()]);
-    
+
         return back()->with('error', 'Failed to create OnePay link.')->withErrors($response->json());
-    }    
-    
+    }
+
 
     public function callback(Request $request)
     {
@@ -133,10 +133,10 @@ class BookingController extends Controller
             'input' => $request->all(),
             'raw_body' => $request->getContent(),
         ]);
-    
+
         // ✅ Correct: get 'reference' from query parameters
         $reference = $request->query('reference');
-    
+
         if (!$reference) {
             Log::warning('No reference found in callback URL.');
             return view('frontend.callback')->with([
@@ -145,10 +145,10 @@ class BookingController extends Controller
                 'reference' => null,
             ]);
         }
-    
+
         $booking = Booking::where('reference', $reference)->first();
-    
-        if ($booking && $booking->status === 'Paid') {
+
+        if ($booking && $booking->status === 'Confirmed') {
             return view('frontend.callback')->with([
                 'status'    => 'success',
                 'message'   => 'Your payment was successful! Thank you for booking with us.',
@@ -168,7 +168,7 @@ class BookingController extends Controller
             ]);
         }
     }
-    
+
 
     public function notify(Request $request)
     {
@@ -214,8 +214,8 @@ class BookingController extends Controller
     }
 
 
-        
-    
+
+
 
     public function pending()
     {
@@ -272,7 +272,23 @@ class BookingController extends Controller
         return view('AdminDashboard.bookings.failed');
     }
 
+    /**
+     * Get payment info
+     */
+    public function getPaymentInfo(Request $request)
+    {
+        $response = $request->json()->all();
+        $reference = $response['additional_data'];
+        $status = $response['status_message'];
 
+        $booking = Booking::where('reference', $reference)->first();
+        if($booking) {
+            if($status == "SUCCESS") {
+                $booking->status = 'Confirmed';
+                $booking->save();
+            }
+        }
+    }
 
 
 }

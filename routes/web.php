@@ -230,7 +230,7 @@ Route::prefix('admin/bookings')->name('admin.bookings.')->group(function () {
 
 // VIP Package Resource Routes
 Route::prefix('vip-packages')->group(function () {
-    
+
     Route::get('/', [VipPackageController::class, 'index'])->name('vip-packages.index');
     Route::get('/vip-packages/create', [VipPackageController::class, 'create'])->name('vip-packages.create');
     Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
@@ -352,4 +352,4 @@ Route::post('/student/profile', [StudentDashboardController::class, 'updateProfi
 Route::post('/student/profile/password', [StudentDashboardController::class, 'updatePassword'])->name('customer.password.update');
 
 
-    
+

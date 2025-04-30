@@ -51,7 +51,7 @@
                             </td>
                             <td><span class="badge bg-secondary">{{ $booking->status }}</span></td>
                             <td>
-                                <form action="{{ route('admin.orders.updateStatus', ['id' => $booking->id, 'status' => 'Confirmed']) }}" method="POST">
+                                <form action="{{ route('admin.orders.updateStatus', ['id' => $booking->id, 'status' => 'Full']) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="btn btn-sm btn-success">Confirm Full</button>

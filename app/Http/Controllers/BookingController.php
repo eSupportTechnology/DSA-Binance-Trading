@@ -67,7 +67,7 @@ class BookingController extends Controller
                 'bank_name'      => $request->bank_name,
                 'bank_branch'    => $request->bank_branch,
                 'transfer_date'  => $request->transfer_date,
-                'status'         => 'Pending',
+                'status'         => 'Confirmed',
             ]);
 
             return redirect()->route('booking.success');
@@ -213,10 +213,7 @@ class BookingController extends Controller
         return response()->json(['message' => 'Payment failed or canceled'], 200);
     }
 
-
-
-
-
+    
     public function pending()
     {
         $bookings = Booking::with('customer', 'course')

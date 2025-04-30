@@ -35,4 +35,10 @@ class Customer extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Booking::class, 'customer_id', 'user_id');
     }
+
+    public function assignedBatches()
+    {
+        return $this->hasMany(CustomerCourseBatch::class, 'customer_id', 'user_id')->with(['course', 'batch']);
+    }
+
 }

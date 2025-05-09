@@ -23,9 +23,9 @@ class BackendTemplateController extends Controller
     // Show list of customers
     public function index1()
     {
-        $customers = Customer::latest()->paginate(10);
+        $customers = Customer::with('assignedBatches')->latest()->paginate(10);
         return view('AdminDashboard.customers.index', compact('customers'));
-    }
+    }    
 
     // Toggle status (active/inactive)
     public function toggleStatus($id)
@@ -59,14 +59,22 @@ class BackendTemplateController extends Controller
         }
     }
 
+
     public function pendingOrders()
     {
-        $bookings = Booking::with(['customer', 'course.batches']) // 👈 fetch batches here
-            ->where('status', 'Pending')
+        $pendingBookings = Booking::with(['customer', 'course.batches'])
+            ->where('status', 'Confirmed')
+            ->where('payment_method', 'Bank Transfer')
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('AdminDashboard.orders.pending', compact('bookings'));
+        $cardConfirmedBookings = Booking::with(['customer', 'course.batches'])
+            ->where('status', 'Confirmed')
+            ->where('payment_method', 'Card')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('AdminDashboard.orders.pending', compact('pendingBookings', 'cardConfirmedBookings'));
     }
 
 
@@ -84,25 +92,25 @@ class BackendTemplateController extends Controller
     public function successOrders()
     {
         $bookings = Booking::with(['customer', 'course'])
-            ->where('status', 'Confirmed')
+            ->where('status', 'Full')
             ->orderBy('id', 'desc')
             ->get();
         return view('AdminDashboard.orders.success', compact('bookings'));
     }
 
     public function updateOrderStatus($id, $status)
-{
-    $booking = Booking::findOrFail($id);
+    {
+        $booking = Booking::findOrFail($id);
 
-    if (!in_array($status, ['Confirmed', 'Half'])) {
-        return redirect()->back()->with('error', 'Invalid status value.');
+        if (!in_array($status, ['Full', 'Half'])) {
+            return redirect()->back()->with('error', 'Invalid status value.');
+        }
+
+        $booking->status = $status;
+        $booking->save();
+
+        return redirect()->back()->with('success', "Booking marked as $status successfully.");
     }
-
-    $booking->status = $status;
-    $booking->save();
-
-    return redirect()->back()->with('success', "Booking marked as $status successfully.");
-}
 
 
     public function updateBooking(Request $request, $id)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Batch;
 use App\Models\Course;
+use App\Models\CustomerCourseBatch;
 use Illuminate\Http\Request;
 
 class BatchController extends Controller
@@ -69,4 +70,19 @@ class BatchController extends Controller
 
         return redirect()->route('admin.batches.index')->with('success', 'Batch deleted successfully.');
     }
+
+    //update customer batches
+    public function updateBatch(Request $request, $id)
+    {
+        $request->validate([
+            'batch_id' => 'required|exists:batches,id',
+        ]);
+
+        $assignment = CustomerCourseBatch::findOrFail($id);
+        $assignment->batch_id = $request->batch_id;
+        $assignment->save();
+
+        return back()->with('success', 'Batch updated successfully.');
+    }
+
 }

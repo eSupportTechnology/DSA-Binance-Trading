@@ -331,6 +331,8 @@ Route::prefix('admin/batches')->name('admin.batches.')->group(function () {
     Route::get('/{id}/edit', [BatchController::class, 'edit'])->name('edit');
     Route::put('/{id}', [BatchController::class, 'update'])->name('update');
     Route::delete('/{id}', [BatchController::class, 'destroy'])->name('destroy');
+    Route::put('/customers/batch/{id}', [BatchController::class, 'updateBatch'])->name('updateBatch');
+
 });
 
 //-----------------------student dashboard

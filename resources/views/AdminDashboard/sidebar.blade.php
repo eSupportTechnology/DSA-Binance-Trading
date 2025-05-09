@@ -3,7 +3,7 @@
     <div>
         <!-- Logo Section -->
         <div class="logo-wrapper">
-            <a href="{{ route('customer.dashboard') }}">
+            <a href="{{ route('admin.dashboard') }}">
                 <img class="img-fluid for-light" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo">
                 <img class="img-fluid for-dark" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo Dark">
             </a>
@@ -14,7 +14,7 @@
         <div class="logo-icon-wrapper">
             <a href="index.html"><img class="img-fluid" src="frontend/assets/images/logo/logo-icon.png" alt=""></a>
         </div>
-        <nav class="sidebar-main">
+        <nav class="sidebar-main ">
             <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
             <div id="sidebar-menu">
                 <ul class="sidebar-links" id="simple-bar">
@@ -26,7 +26,7 @@
                     </li>
 
                     <!-- Dashboard -->
-                    <li class="sidebar-list mt-5">
+                    <li class="sidebar-list mt-5" >
                         <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
@@ -168,12 +168,12 @@
 
 
                     <!-- Settings -->
-                    <li class="sidebar-list">
+                    <li class="sidebar-list mb-5">
                         <a class="sidebar-link sidebar-title" href="#">
                             <i class="fa fa-cog"></i>
                             <span>Settings</span>
                         </a>
-                        <ul class="sidebar-submenu">
+                        <ul class="sidebar-submenu mb-5">
                             <li><a href="{{ route('admin.banners.index') }}">Manage Banners</a></li>
                             <li><a href="{{ route('admin.employees.index') }}">Manage Employees</a></li>
                         </ul>

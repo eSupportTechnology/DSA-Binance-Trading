@@ -15,6 +15,7 @@ class VipBooking extends Model
         'bank_branch',
         'transfer_date',
         'status',
+        'reference',
     ];
-    
+
 }

@@ -31,9 +31,22 @@
             </div>
 
             <!-- Right: Form -->
-            <div class="col-lg-7">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
+                        <div class="col-lg-7">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body">
+                                    @if(session('error'))
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                        @endif
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <h4 class="mb-3 text-center">Your Information</h4>
                         <form action="{{ route('vip-packages.booking.submit') }}" method="POST" enctype="multipart/form-data" id="vipBookingForm">
                             @csrf
@@ -97,20 +110,23 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Card Payment -->
-                                <div id="cardSection" class="text-center mt-4 d-none">
-                                    <a href="#" class="btn btn-outline-primary">Proceed to Card Payment</a>
-                                </div>
-
                                 <!-- Submit -->
-                                <div class="text-center mt-4">
+                                <div class="text-center mt-4" id="bank_area">
                                     <button type="submit" class="btn btn-success px-5">Confirm Booking</button>
                                 </div>
+                            </form>
+                                <form action="{{ route('vip-packages.booking-card.submit') }}" method="POST" id="vipBookingCard">
+                                    @csrf
+                                    <input type="hidden" name="package_id" value="{{ $package->id }}">
+                                    <!-- Card Payment -->
+                                    <div id="cardSection" class="text-center mt-4 d-none">
+                                        <button type="submit" class="btn btn-outline-primary">Proceed to Card Payment</button>
+                                    </div>
+                                </form>
+
                             </div>
                             <!-- End Payment Section -->
 
-                        </form>
                     </div>
                 </div>
             </div>
@@ -129,6 +145,7 @@
         const paymentMethod = document.getElementById('paymentMethod');
         const bankDetails = document.getElementById('bankDetails');
         const cardSection = document.getElementById('cardSection');
+        const bankArea = document.getElementById('bank_area');
 
         togglePayment.addEventListener('click', function () {
             paymentSection.classList.remove('d-none');
@@ -142,6 +159,8 @@
             } else if (this.value === 'Card') {
                 cardSection.classList.remove('d-none');
                 bankDetails.classList.add('d-none');
+                bankArea.remove();
+
             } else {
                 bankDetails.classList.add('d-none');
                 cardSection.classList.add('d-none');

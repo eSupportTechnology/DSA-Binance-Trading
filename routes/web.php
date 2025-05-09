@@ -79,6 +79,8 @@ Route::get('/vip_Packages', [FrontendTemplateController::class, 'vipPackages'])-
 Route::get('/vip-packages/{id}', [FrontendTemplateController::class, 'showVipPackage'])->name('frontend.vip.package.show');
 Route::get('/vippackage/book/{id}', [VipPackageBookingController::class, 'create'])->name('vip-packages.book');
 Route::post('/vippackage/submit', [VipPackageBookingController::class, 'store'])->name('vip-packages.booking.submit');
+Route::post('/vippackage-card/submit', [VipPackageBookingController::class, 'ProcessCardPayment'])->name('vip-packages.booking-card.submit');
+Route::get('/vip-payment/callback', [VipPackageBookingController::class, 'callback'])->name('vip-payment.callback');
 
 
 

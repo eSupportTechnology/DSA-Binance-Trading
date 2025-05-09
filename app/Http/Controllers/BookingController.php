@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Booking;
 use App\Models\Customer;
+use App\Models\VipBooking;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Session;
 use App\Helpers\OnepayHelper;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 
 class BookingController extends Controller
@@ -280,6 +281,17 @@ class BookingController extends Controller
         $response = $request->json()->all();
         $reference = $response['additional_data'];
         $status = $response['status_message'];
+
+        if(str_contains($reference, "DSAVIP")) {
+            $vipBooking = VipBooking::where('reference', $reference)->first();
+            if($vipBooking) {
+                if($status == "SUCCESS") {
+                    $vipBooking->status = 'Confirmed';
+                    $vipBooking->save();
+                }
+            }
+            return;
+        }
 
         $booking = Booking::where('reference', $reference)->first();
         if($booking) {

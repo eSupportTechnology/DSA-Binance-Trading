@@ -1,4 +1,4 @@
-vip-callback@extends('frontend.master')
+@extends('frontend.master')
 
 @section('title', 'Booking Status - DSA Academy')
 
@@ -6,7 +6,7 @@ vip-callback@extends('frontend.master')
 <div class="pageheader-section">
     <div class="container">
         <div class="pageheader-content text-center">
-            <h2>Booking Status</h2>
+            <h2>VIP Course Purchase Status</h2>
         </div>
     </div>
 </div>

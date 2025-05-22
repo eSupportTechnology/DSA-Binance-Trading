@@ -16,7 +16,7 @@
         </div>
         <nav class="sidebar-main ">
             <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
-            <div id="sidebar-menu">
+            <div id="sidebar-menu" style="max-height: calc(100vh - 100px); overflow-y: auto;">
                 <ul class="sidebar-links" id="simple-bar">
                     <li class="back-btn">
                         <a href="{{ route('admin') }}">
@@ -166,6 +166,31 @@
                         </ul>
                     </li>
 
+                    <!-- Call Center Management -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-phone"></i>
+                            <span>Call Center</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.callcenter.index') }}">All Contacts</a></li>
+                            <li><a href="{{ route('admin.callcenter.create') }}">Add New Contact</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Popup Leads -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-user-plus"></i>
+                            <span>Popup Leads</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('popupcontacts.index') }}">All Leads</a></li>
+                        </ul>
+                    </li>
+
+
+
 
                     <!-- Settings -->
                     <li class="sidebar-list mb-5">
@@ -205,3 +230,6 @@
         });
     });
 </script>
+
+
+

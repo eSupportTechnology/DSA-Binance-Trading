@@ -7,11 +7,12 @@
 
 @php
     function getYoutubeVideoId($url) {
-        if (preg_match('/(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/watch\?v=|\/v\/))([^\&\?\/]+)/', $url, $matches)) {
-            return $matches[1];
-        }
-        return null;
+    if (preg_match('/(?:youtu\.be\/|youtube\.com\/(?:embed\/|watch\?v=|v\/|shorts\/))([^\&\?\/]+)/', $url, $matches)) {
+        return $matches[1];
     }
+    return null;
+}
+
 @endphp
 
 
@@ -77,6 +78,11 @@
     visibility: visible !important;
     transition: none !important; /* Cancel any transition effects */
 }
+
+.about-dsa-bg {
+    background-color: #71a2da;
+}
+
 
 @keyframes fall{
     0%{
@@ -169,16 +175,7 @@
             </div>
         </div>
 
-        <!-- Optional: Floating Stats -->
-        <div class="cbs-content-list d-none d-lg-block mt-4">
-            <ul class="lab-ul">
-                <li class="ccl-shape shape-1"><a href="#">10,000+ Students Trained</a></li>
-                <li class="ccl-shape shape-2"><a href="#">25+ Certified Courses</a></li>
-                <li class="ccl-shape shape-3"><a href="#">95% Student Satisfaction</a></li>
-                <li class="ccl-shape shape-4"><a href="#">Experienced Trainers</a></li>
-                <li class="ccl-shape shape-5"><a href="#">Flexible Learning Modes</a></li>
-            </ul>
-        </div>
+        
     </section>
     <!-- banner section ending here -->
 
@@ -229,7 +226,7 @@
                             @php
                                 $videoId = getYoutubeVideoId($video->youtube_url);
                                 $thumbnailUrl = $video->thumbnail
-                                    ? asset('storage/' . $video->thumbnail)
+                                    ? asset('storage/app/public/' . $video->thumbnail)
                                     : ($videoId ? 'https://img.youtube.com/vi/' . $videoId . '/hqdefault.jpg' : null);
                             @endphp
 
@@ -268,19 +265,19 @@
     
     
     <!-- About DSA Academy Section -->
-    <div class="skill-section padding-tb section-bg ">
-        <div class="container">
-            <div class="row justify-content-center align-items-center">
+    <div class="padding-tb section-bg about-dsa-bg" >
+        <div class="container" >
+            <div class="row justify-content-center align-items-center" >
                 <!-- Left Column: About Content -->
                 <div class="col-lg-5 col-12">
-                    <div class="section-header mb-4">
+                    <div class="section-header mb-4" >
                         <span class="subtitle text-danger">About DSA Academy</span>
                         <h2 class="title" style="color:#1b2954;">Empowering Your Future With Practical Skills</h2>
                         <p class="mt-3">
                             DSA Academy is a leading education provider focused on delivering high-quality, practical training in IT, business, and professional development. 
                             We empower individuals through hands-on learning, expert instructors, and industry-recognized certifications—ensuring you're ready for the real world.
                         </p>
-                        <a href="#courses" class="lab-btn mt-4"><span>Explore Our Courses</span></a>
+                        <a href="{{ route('frontend.Course') }}"  class="lab-btn mt-4"><span>Explore Our Courses</span></a>
                     </div>
                 </div>
 
@@ -366,19 +363,21 @@
                                 
                                 <!-- Top: Student Image -->
                                 <div class="mb-4">
-                                    <img src="{{ $review->image ? asset('storage/' . $review->image) : asset('frontend/assets/images/default-user.png') }}"
+                                    <img src="{{ $review->image ? asset('storage/app/public/' . $review->image) : asset('frontend/assets/images/default-user.png') }}"
                                         alt="{{ $review->student_name }}"
-                                        class="rounded-circle mx-auto d-block shadow"
-                                        style="width: 100px; height: 100px; object-fit: cover;">
+                                        class="mx-auto d-block shadow rounded"
+     style="width: 250px; height: 200px; object-fit: cover;">
                                 </div>
 
                                 <!-- Bottom: Name & Rating -->
                                 <div>
                                     <h6 class="mb-2">{{ $review->student_name }}</h6>
                                     <div class="ratting">
-                                        @for($i = 1; $i <= 5; $i++)
-                                            <i class="icofont-ui-rating{{ $i <= $review->rating ? '' : '-blank' }}"></i>
-                                        @endfor
+                                       @for($i = 1; $i <= 5; $i++)
+    <i class="icofont-ui-rating{{ $i <= $review->rating ? '' : '-blank' }}"
+       style="color: {{ $i <= $review->rating ? 'gold' : '#ccc' }};"></i>
+@endfor
+
                                     </div>
                                 </div>
                                 
@@ -439,11 +438,11 @@
                                     <div class="post-thumb" style="height: 250px; overflow: hidden;">
                                         @if($blog->media_type === 'image' && $blog->media_path)
                                             <a href="#">
-                                                <img src="{{ asset('storage/' . $blog->media_path) }}" alt="{{ $blog->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                <img src="{{ asset('storage/app/public/' . $blog->media_path) }}" alt="{{ $blog->title }}" style="width: 100%; height: 100%; object-fit: cover;">
                                             </a>
                                         @elseif($blog->media_type === 'video' && $blog->media_path)
                                             <video width="100%" height="250" controls style="object-fit: cover;">
-                                                <source src="{{ asset('storage/' . $blog->media_path) }}" type="video/mp4">
+                                                <source src="{{ asset('storage/app/public/' . $blog->media_path) }}" type="video/mp4">
                                                 Your browser does not support the video tag.
                                             </video>
                                         @else
@@ -507,7 +506,7 @@
                     @foreach($banners as $banner)
                         <div class="swiper-slide">
                             <div class="banner-item shadow-sm rounded overflow-hidden">
-                                <img src="{{ asset('storage/' . $banner->image) }}"
+                                <img src="{{ asset('storage/app/public/' . $banner->image) }}"
                                     alt="Banner Image"
                                     class="w-100"
                                     style="height: 500px; object-fit: cover;">
@@ -559,60 +558,48 @@
 
             <div class="section-wrapper">
                 <div class="row g-4 justify-content-center row-cols-xl-3 row-cols-md-2 row-cols-1">
-
                     @forelse($featuredCourses as $course)
-                    <div class="col">
-                        <div class="course-item">
-                            <div class="course-inner">
-                                <div class="course-thumb">
-                                    <img src="{{ asset($course->image) }}" alt="{{ $course->name }}" style="height:350px; object-fit:cover;">
-                                </div>
-                                <div class="course-content">
-                                    
-                                <div class="course-category d-flex justify-content-between align-items-center">
-                                    <div class="course-price-box">
-                                        Rs. {{ number_format($course->total_price, 2) }}
+                        <div class="col">
+                            <div class="course-item">
+                                <div class="course-inner">
+                                    <div class="course-thumb">
+                                        @if ($course->image)
+                                            <img src="{{ asset('public/' . $course->image) }}" alt="{{ $course->name }}" style="height: 350px; width: 100%; object-fit: cover;">
+                                        @else
+                                            <img src="{{ asset('frontend/assets/images/default-course.jpg') }}" alt="No Image" style="height: 350px; width: 100%; object-fit: cover;">
+                                        @endif
                                     </div>
+                                    <div class="course-content">
 
-                                    <div class="course-review text-end">
-                                        <span class="ratting">
-                                            <i class="icofont-ui-rating"></i>
-                                            <i class="icofont-ui-rating"></i>
-                                            <i class="icofont-ui-rating"></i>
-                                            <i class="icofont-ui-rating"></i>
-                                            <i class="icofont-ui-rating"></i>
-                                        </span>
-                                        <span class="ratting-count">4.8</span>
-                                    </div>
-                                </div>
+                                        <a href="{{ route('frontend.Course_Details', ['id' => $course->course_id]) }}">
+                                            <h5 class="mt-2">{{ $course->name }}</h5>
+                                        </a>
 
-                                    <a href="{{ route('frontend.Course', $course->slug) }}">
-                                        <h5>{{ $course->name }}</h5>
-                                    </a>
-                                    <div class="course-details">
-                                        <div class="couse-count"><i class="icofont-video-alt"></i> {{ $course->duration }} Lessons</div>
-                                        <div class="couse-topic"><i class="icofont-signal"></i> {{ ucfirst($course->mode) }} Class</div>
-                                    </div>
-                                    <div class="course-footer">
-                                        <div class="course-author">
-                                            <a href="#">DSA Academy</a>
+                                        <div class="course-details mt-3">
+                                            <p><i class="icofont-video-alt"></i> {{ $course->duration }} Lessons</p>
+                                            <p><i class="icofont-globe"></i> {{ ucfirst($course->mode) }} Class</p>
                                         </div>
-                                        <div class="course-btn">
-                                            <a href="{{ route('frontend.Course', $course->slug) }}" class="lab-btn-text">
+
+                                        <div class="course-footer mt-3 text-end">
+                                            <!-- Read More button -->
+                                            <a href="{{ route('frontend.Course_Details', ['id' => $course->course_id]) }}" class="lab-btn-text mb-2 d-inline-block">
                                                 Read More <i class="icofont-external-link"></i>
                                             </a>
+
+                                            <div class="fw-bold" style="font-size: 22px; color: #e53935;">
+                                                Rs. {{ number_format($course->total_price, 2) }}
+                                            </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     @empty
                         <div class="col-12 text-center">
-                            <p>No courses available at the moment.</p>
+                            <p>No featured courses available at the moment.</p>
                         </div>
                     @endforelse
-
                 </div>
             </div>
         </div>
@@ -620,74 +607,299 @@
     <!-- course section ending here -->
 
 
-    <!-- VIP Packages Section Start -->
-    <div class="course-section padding-tb section-bg">
-        <div class="container">
-            <div class="section-header text-center">
-                <span class="subtitle" style="color:#ed3532;">DSA Special</span>
-                <h2 class="title" style="color:#1b2954;">Our VIP Signal Packages</h2>
-            </div>
 
-            <div class="section-wrapper">
-                <div class="row g-4 justify-content-center row-cols-xl-3 row-cols-md-2 row-cols-1">
-                    @forelse($vipPackages as $package)
-                        <div class="col">
-                            <div class="course-item">
-                                <div class="course-inner">
-                                    <div class="course-thumb">
-                                        <img src="{{ asset('storage/' . $package->image) }}" alt="{{ $package->title }}" style="height:350px; object-fit:cover;">
-                                    </div>
-                                    <div class="course-content">
-                                        <!-- Price and Rating Row -->
-                                        <div class="course-category d-flex justify-content-between align-items-center">
-                                            <div class="course " style="backgroud-color:#000;">
-                                                
-                                            </div>
-                                            <!-- Price and Rating Row -->
-                                            <div class="course-category d-flex justify-content-between align-items-center">
-                                                <div class="course-price-box">
-                                                    Rs. {{ number_format($package->price, 2) }}
-                                                </div>
-                                                
-                                            </div>
+<!-- VIP Packages Section Start -->
+<div class="course-section padding-tb section-bg">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="subtitle" style="color:#ed3532;">DSA Special</span>
+            <h2 class="title" style="color:#1b2954;">Our VIP Signal Packages</h2>
+        </div>
+
+        <div class="section-wrapper">
+            <div class="row g-4 justify-content-center row-cols-xl-3 row-cols-md-2 row-cols-1">
+                @forelse($vipPackages as $package)
+                    <div class="col">
+                        <div class="course-item">
+                            <div class="course-inner">
+                                <!-- Image -->
+                                <div class="course-thumb">
+                                    <img src="{{ asset('storage/' . $package->image) }}" alt="{{ $package->title }}" style="height:350px; object-fit:cover;">
+                                </div>
+
+                                <!-- Content -->
+                                <div class="course-content">
+                                    <!-- Price -->
+                                    <div class="course-category d-flex justify-content-between align-items-center">
+                                        <div class="course-price-box">
+                                            Rs. {{ number_format($package->price, 2) }}
                                         </div>
-
-                                        <!-- Title -->
-                                        <h5 class="text-truncate">{{ $package->title }}</h5>
-
-                                        <!-- Description -->
-                                        <p>{{ \Illuminate\Support\Str::limit($package->description, 100) }}</p>
-
-                                        <!-- Footer -->
-                                        <div class="course-footer">
-                                            <div class="course-author">
-                                                <a href="#">DSA Academy</a>
-                                            </div>
-                                            <div class="course-btn">
-                                                <a  class="lab-btn-text">
-                                                    Read More <i class="icofont-external-link"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-
                                     </div>
+
+                                    <!-- Title (Linked to Details Page) -->
+                                    <a href="{{ route('frontend.vip.package.show', $package->id) }}">
+                                        <h5 class="text-truncate mt-2">{{ $package->title }}</h5>
+                                    </a>
+
+                                    <!-- Short Description -->
+                                    <p>{{ \Illuminate\Support\Str::limit($package->description, 100) }}</p>
+
+                                    <!-- Footer -->
+                                    <div class="course-footer">
+                                        <div class="course-author">
+                                            <a href="#">DSA Academy</a>
+                                        </div>
+                                        <div class="course-btn">
+                                            <a href="{{ route('frontend.vip.package.show', $package->id) }}" class="lab-btn-text">
+                                                Read More <i class="icofont-external-link"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-                    @empty
-                        <div class="col-12 text-center">
-                            <p>No VIP packages available at the moment.</p>
-                        </div>
-                    @endforelse
-                </div>
-
-                
+                    </div>
+                @empty
+                    <div class="col-12 text-center">
+                        <p>No VIP packages available at the moment.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>
-    <!-- VIP Packages Section End -->
+</div>
+<!-- VIP Packages Section End -->
+
+
+<!-- Floating Call Center Button -->
+<div id="callCenterButton" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ed3532;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+">
+    <i class="icofont-phone"></i>
+</div>
+
+<!-- Contact Popup -->
+<div id="callCenterPopup" style="
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 250px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+">
+    <h6 class="mb-2 text-danger">📞 Call Center</h6>
+    <p class="text-muted mb-2" style="font-size: 13px;">Contact us for more details</p>
+    <ul id="callCenterList" class="list-unstyled mb-0" style="font-size: 14px;"></ul>
+</div>
+
+
+@if($bannersss->count())
+<div id="popupBanner" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+">
+    <div style="
+        position: relative;
+        max-width: 700px;
+        width: 90%;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    ">
+
+        <!-- Close Button -->
+        <button type="button" class="popup-close-btn" style="
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ed3532;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        ">&times;</button>
+
+        <!-- Swiper for Banner Images -->
+        <div class="swiper popupSwiper">
+            <div class="swiper-wrapper">
+                @foreach($bannersss as $banner)
+                    <div class="swiper-slide">
+                        <img src="{{ asset('storage/' . $banner->image) }}" alt="Banner" style="width: 100%; height: 350px; object-fit: cover;">
+                    </div>
+                @endforeach
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+
+        <!-- Form -->
+        <div style="padding: 20px;">
+            <h5 class="text-center text-danger mb-3">Get More Details</h5>
+            <form id="bannerLeadForm">
+                <div class="mb-3">
+                    <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" name="phone" class="form-control" placeholder="Contact Number" required>
+                </div>
+                <button type="submit" class="btn btn-danger w-100">Submit</button>
+                <div id="formSuccessMsg" class="text-success text-center mt-2" style="display: none;">
+                    ✅ Our agents will contact you soon.
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
+
+
+
+
+
+
 
 
 
 @endsection
+
+
+@push('script')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const button = document.getElementById('callCenterButton');
+    const popup = document.getElementById('callCenterPopup');
+    const list = document.getElementById('callCenterList');
+
+    if (!button || !popup || !list) return;
+
+    button.addEventListener('click', function () {
+        popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+
+        if (popup.style.display === 'block' && list.children.length === 0) {
+            fetch('{{ route('callcenter.contacts') }}')
+                .then(res => res.json())
+                .then(data => {
+                    list.innerHTML = ''; // Clear previous
+                    if (data.length === 0) {
+                        list.innerHTML = "<li>No contacts available.</li>";
+                    } else {
+                        data.forEach(contact => {
+                            const li = document.createElement('li');
+                            li.classList.add('mb-2');
+                            li.innerHTML = `<strong>${contact.name}</strong><br><a href="tel:${contact.phone_number}">${contact.phone_number}</a>`;
+                            list.appendChild(li);
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    list.innerHTML = "<li>Failed to load contacts.</li>";
+                });
+        }
+    });
+
+    document.addEventListener("click", function (e) {
+        if (!popup.contains(e.target) && !button.contains(e.target)) {
+            popup.style.display = "none";
+        }
+    });
+});
+</script>
+@endpush
+
+
+@push('script')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Swiper init
+    new Swiper('.popupSwiper', {
+        loop: true,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        }
+    });
+
+    // Close button functionality
+    const closeBtn = document.querySelector('.popup-close-btn');
+    const popup = document.getElementById('popupBanner');
+    if (closeBtn && popup) {
+        closeBtn.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+    }
+
+    // AJAX form submission
+    const form = document.getElementById('bannerLeadForm');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const data = new FormData(form);
+
+        fetch('{{ route("popup.contact.submit") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: data
+        })
+        .then(res => res.json())
+        .then(response => {
+            if (response.success) {
+                form.reset();
+                document.getElementById('formSuccessMsg').style.display = 'block';
+            } else {
+                alert('Something went wrong. Try again.');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Error submitting the form.');
+        });
+    });
+});
+</script>
+@endpush
 

@@ -10,10 +10,23 @@
         <div class="row justify-content-center justify-content-lg-between align-items-center flex-row-reverse">
             <div class="col-lg-7 col-12">
                 <div class="pageheader-thumb">
+                    @if ($course->video_link)
+                    <div class="position-relative">
+                        <img src="https://img.youtube.com/vi/{{ \Illuminate\Support\Str::afterLast($course->video_link, 'v=') }}/hqdefault.jpg"
+                            alt="Video thumbnail"
+                            class="w-100 rounded shadow-sm">
+                            @php
+                                $videoId = \Illuminate\Support\Str::afterLast($course->video_link, 'v=');
+                            @endphp
+                            <a href="https://www.youtube.com/embed/{{ $videoId }}" class="video-button" data-rel="lightcase">
+                                <i class="icofont-ui-play"></i>
+                            </a>
+
+                    </div>
+                @else
                     <img src="{{ asset($course->image) }}" alt="{{ $course->name }}" class="w-100 rounded shadow-sm">
-                    <a href="https://www.youtube.com" class="video-button" data-rel="lightcase">
-                        <i class="icofont-ui-play"></i>
-                    </a>
+                @endif
+
                 </div>
             </div>
             <div class="col-lg-5 col-12">

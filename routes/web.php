@@ -19,6 +19,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\VipPackageBookingController;
 use App\Http\Controllers\EmployeeAuthController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\CallCenterController;
 
 // Verification notice
 Route::get('/email/verify', function () {
@@ -120,6 +121,11 @@ Route::get('/contact', function (){
     return view('frontend.contact');
 })->name('frontend.contact');
 require __DIR__.'/auth.php';
+
+
+use App\Http\Controllers\PopupContactController;
+Route::post('/popup-contact-submit', [PopupContactController::class, 'store'])->name('popup.contact.submit');
+Route::get('popup-leads', [PopupContactController::class, 'index'])->name('popupcontacts.index');
 
 
 
@@ -253,6 +259,18 @@ Route::prefix('admin/youtube-videos')->name('admin.youtube-videos.')->group(func
 
 
 
+Route::prefix('admin/call-center')->name('admin.callcenter.')->group(function () {
+    Route::get('/', [CallCenterController::class, 'index'])->name('index');
+    Route::post('/', [CallCenterController::class, 'store'])->name('store');
+    Route::get('/create', [CallCenterController::class, 'create'])->name('create');
+    Route::get('/{id}/edit', [CallCenterController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [CallCenterController::class, 'update'])->name('update');
+    Route::delete('/{id}', [CallCenterController::class, 'destroy'])->name('destroy');
+});
+Route::get('/call-center-contacts', [CallCenterController::class, 'getContacts'])->name('callcenter.contacts');
+
+
+
 Route::prefix('admin/reviews')->name('admin.reviews.')->group(function () {
     Route::get('/', [ReviewController::class, 'index'])->name('index');
     Route::get('/create', [ReviewController::class, 'create'])->name('create');
@@ -332,6 +350,10 @@ Route::prefix('admin/batches')->name('admin.batches.')->group(function () {
     Route::put('/customers/batch/{id}', [BatchController::class, 'updateBatch'])->name('updateBatch');
 
 });
+
+
+
+
 
 //-----------------------student dashboard
 

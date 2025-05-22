@@ -75,6 +75,35 @@
                         </div>
                     </div>
 
+                    {{-- Video Link --}}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Course Video:</strong>
+                                @if ($course->video_link)
+                                    <p>
+                                        <a href="{{ $course->video_link }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                            Watch Video
+                                        </a>
+                                    </p>
+
+                                    {{-- Optional: Embed YouTube preview --}}
+                                    @php
+                                        preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([^\&\?\/]+)/', $course->video_link, $matches);
+                                        $videoId = $matches[1] ?? null;
+                                    @endphp
+
+                                    @if ($videoId)
+                                        <div class="ratio ratio-16x9 mt-2">
+                                            <iframe src="https://www.youtube.com/embed/{{ $videoId }}" frameborder="0" allowfullscreen></iframe>
+                                        </div>
+                                    @endif
+                                @else
+                                    <p class="text-muted">No video link provided.</p>
+                                @endif
+                            </div>
+                        </div>
+
+
                     {{-- Location --}}
                     <div class="row mb-3">
                         <div class="col-md-6">

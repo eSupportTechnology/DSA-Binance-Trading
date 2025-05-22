@@ -49,6 +49,12 @@
                     </select>
                 </div>
 
+                <div class="mb-3">
+                    <label class="form-label">Video Link (optional)</label>
+                    <input type="url" name="video_link" class="form-control" placeholder="https://youtube.com/..." value="{{ old('video_link') }}">
+                </div>
+
+
                 <div class="text-end">
                     <button class="btn btn-success">Save Package</button>
                     <a href="{{ route('vip-packages.index') }}" class="btn btn-secondary">Back</a>

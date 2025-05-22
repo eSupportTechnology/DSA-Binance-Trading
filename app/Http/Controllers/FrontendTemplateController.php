@@ -9,6 +9,7 @@ use App\Models\Blog;
 use App\Models\YoutubeVideo;
 use App\Models\Review;
 use App\Models\AdBanner;
+use App\Models\Banner;
 
 class FrontendTemplateController extends Controller
 {
@@ -20,6 +21,7 @@ class FrontendTemplateController extends Controller
         $youtubeVideos = YoutubeVideo::latest()->take(3)->get();
         $reviews = Review::where('status', 'approved')->latest()->get();
         $banners = AdBanner::where('status', true)->latest()->get();
+        $bannersss = Banner::where('status', 1)->latest()->get();
 
         // Real stats (you can use actual counts)
         $stats = [
@@ -31,7 +33,7 @@ class FrontendTemplateController extends Controller
 
 
         return view('frontend.Home', compact('featuredCourses','vipPackages' , 'latestBlogs', 'youtubeVideos',
-        'stats','reviews','banners'));
+        'stats','reviews','banners','bannersss' ));
     }
 
     public function Home_Two()

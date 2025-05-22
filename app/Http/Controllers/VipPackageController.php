@@ -33,7 +33,7 @@ class VipPackageController extends Controller
             'image' => 'nullable|image',
         ]);
 
-        $data = $request->only(['title', 'price', 'description', 'status']);
+        $data = $request->only(['title', 'price', 'description', 'status','video_link']);
 
         // Handle image upload
         if ($request->hasFile('image')) {
@@ -68,7 +68,7 @@ class VipPackageController extends Controller
             'image' => 'nullable|image',
         ]);
 
-        $data = $request->only(['title', 'price', 'description', 'status']);
+        $data = $request->only(['title', 'price', 'description', 'status', 'video_link']);
 
         // Replace old image if a new one is uploaded
         if ($request->hasFile('image')) {

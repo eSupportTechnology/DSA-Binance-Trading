@@ -23,13 +23,12 @@ a {
     margin-left:10px;
 }
 
-
-
 .signup:hover {
     background-color:rgb(4, 40, 75);
     color: #ee1831 !important;  
     border: 1px solid #ee1831; 
 }
+
 .login {
     
     border: 1px solid white; 
@@ -45,6 +44,7 @@ a {
     color: #ee1831 !important;  
     border: 1px solid #ee1831; 
 }
+
 .lab-ul li i{
     color: white !important; 
     font-size:20px!important;
@@ -153,7 +153,7 @@ a {
             <div class="container">
                 <div class="header-wrapper">
                     <div class="logo">
-                        <a href="index.html"><img src="{{ asset('frontend/assets/images/logo.png') }}" alt="logo"  style="width:200px; height:auto"></a>
+                        <a href="{{ route('frontend.home') }}"><img src="{{ asset('frontend/assets/images/logo.png') }}" alt="logo"  style="width:200px; height:auto"></a>
                     </div> 
                     <div class="menu-area">
                         <div class="menu"  >

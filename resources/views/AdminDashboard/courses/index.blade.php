@@ -39,6 +39,7 @@
                                     <th>Duration (Days)</th>
                                     <th>Total Price (Rs.)</th>
                                     <th>First Payment (Rs.)</th>
+                                    <th>Video</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -57,6 +58,15 @@
                                         <td>{{ $course->duration }}</td>
                                         <td>{{ $course->total_price }}</td>
                                         <td>{{ $course->first_payment }}</td>
+                                        <td>
+                                            @if($course->video_link)
+                                                <a href="{{ $course->video_link }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                    View Video
+                                                </a>
+                                            @else
+                                                <span class="text-muted">No Video</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ route('courses.show', $course->course_id) }}" class="btn btn-info btn-sm">View</a>
                                             <a href="{{ route('courses.edit', $course->course_id) }}" class="btn btn-warning btn-sm">Edit</a>

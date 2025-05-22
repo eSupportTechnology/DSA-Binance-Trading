@@ -16,7 +16,8 @@ class VipPackage extends Model
         'price',
         'description',
         'status',
-        'image'
+        'image',
+        'video_link'
     ];
 
     // Optional: Accessor to format the price

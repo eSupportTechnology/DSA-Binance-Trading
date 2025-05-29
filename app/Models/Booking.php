@@ -20,6 +20,7 @@ class Booking extends Model
         'bank_branch',
         'transfer_date',
         'reference',
+        'call_center_id',
     ];
 
     // Relationships (optional but useful)
@@ -31,5 +32,9 @@ class Booking extends Model
     public function course()
     {
         return $this->belongsTo(Course::class, 'course_id');
+    }
+    public function callCenter()
+    {
+        return $this->belongsTo(CallCenter::class, 'call_center_id');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CallCenter;
 use App\Models\Course;
 use App\Models\Branch;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ class CourseController extends Controller
 {
     // Show all courses
     public function index()
-    { 
+    {
         $courses = Course::all();
         return view('AdminDashboard.courses.index', compact('courses'));
     }
@@ -67,9 +68,12 @@ class CourseController extends Controller
     public function viewdetails($id)
     {
         $course = Course::findOrFail($id);
-        return view('frontend.Course_Details', compact('course'));
+        $callCenters  = CallCenter::all();
+
+        return view('frontend.Course_Details', compact('course', 'callCenters'));
     }
-    
+
+
 
     // Show the form for editing a course
     public function edit($id)

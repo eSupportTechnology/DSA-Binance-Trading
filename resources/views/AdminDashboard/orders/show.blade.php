@@ -34,7 +34,11 @@
                 <li class="list-group-item"><strong>Mode:</strong> {{ ucfirst($booking->course->mode) }}</li>
                 <li class="list-group-item"><strong>Duration:</strong> {{ $booking->course->duration }} days</li>
             </ul>
-
+            <h6 class="text-primary mb-3">Call Center Information</h6>
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item"><strong>Name:</strong> {{ $booking->callCenter ? $booking->callCenter->name : 'N/A' }}</li>
+                <li class="list-group-item"><strong>Phone Number:</strong> {{ $booking->callCenter ? $booking->callCenter->phone_number : 'N/A' }}</li>
+            </ul>
             <h6 class="text-primary mb-3">Payment Details</h6>
             <ul class="list-group list-group-flush mb-3">
                 <li class="list-group-item"><strong>Status:</strong> {{ $booking->status }}</li>
@@ -49,9 +53,11 @@
                         <span class="text-muted">Not Provided</span>
                     @endif
                 </li>
+
+
             </ul>
 
-            
+
         </div>
     </div>
 </div>

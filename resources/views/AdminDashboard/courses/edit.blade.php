@@ -125,6 +125,14 @@
                                     </div>
                                 </div>
 
+                                <!-- Video Link -->
+                                <div class="mb-3 row">
+                                        <label class="col-sm-3 col-form-label">Video Link (optional)</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="url" name="video_link" placeholder="https://youtube.com/..." value="{{ old('video_link', $course->video_link) }}">
+                                        </div>
+                                </div>
+
 
                             </div>
                         </div>

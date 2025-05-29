@@ -60,6 +60,13 @@
                     <small class="text-muted">Leave blank to keep current image.</small>
                 </div>
 
+                <!-- Video Link -->
+                <div class="form-group mb-3">
+                    <label>Video Link (optional)</label>
+                    <input type="url" name="video_link" class="form-control" placeholder="https://youtube.com/..." value="{{ old('video_link', $vipPackage->video_link) }}">
+                </div>
+
+
                 <!-- Status -->
                 <div class="form-group mb-4">
                     <label>Status</label>

@@ -10,10 +10,23 @@
         <div class="row justify-content-center justify-content-lg-between align-items-center flex-row-reverse">
             <div class="col-lg-7 col-12">
                 <div class="pageheader-thumb">
+                    @if ($course->video_link)
+                    <div class="position-relative">
+                        <img src="https://img.youtube.com/vi/{{ \Illuminate\Support\Str::afterLast($course->video_link, 'v=') }}/hqdefault.jpg"
+                            alt="Video thumbnail"
+                            class="w-100 rounded shadow-sm">
+                            @php
+                                $videoId = \Illuminate\Support\Str::afterLast($course->video_link, 'v=');
+                            @endphp
+                            <a href="https://www.youtube.com/embed/{{ $videoId }}" class="video-button" data-rel="lightcase">
+                                <i class="icofont-ui-play"></i>
+                            </a>
+
+                    </div>
+                @else
                     <img src="{{ asset($course->image) }}" alt="{{ $course->name }}" class="w-100 rounded shadow-sm">
-                    <a href="https://www.youtube.com" class="video-button" data-rel="lightcase">
-                        <i class="icofont-ui-play"></i>
-                    </a>
+                @endif
+
                 </div>
             </div>
             <div class="col-lg-5 col-12">
@@ -80,9 +93,54 @@
 
                         <p class="text-center"><i class="icofont-clock-time"></i> Limited Time Offer</p>
 
-                        <div class="d-grid">
-                            <a href="{{ route('course.booking.form', $course->course_id) }}" class="btn btn-primary btn-lg">Enroll Now</a>
-                        </div>
+                        @if(isset($callCenters) && $callCenters->count() > 0)
+                            <form action="{{ route('course.booking.form', $course->course_id) }}" method="GET" id="callCenterForm">
+                                <div class="mb-3">
+                                    <h6 class="text-primary mb-2">How did you hear about us?</h6>
+
+                                    @foreach($callCenters as $callCenter)
+                                        <div class="border rounded p-3 mb-2 call-center-option" style="cursor: pointer; transition: all 0.3s;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="call_center_id"
+                                                       id="callCenter{{ $callCenter->id }}" value="{{ $callCenter->id }}">
+                                                <label class="form-check-label w-100" for="callCenter{{ $callCenter->id }}" style="cursor: pointer;">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <strong>{{ $callCenter->name }}</strong>
+                                                        </div>
+                                                        <div class="text-primary">
+                                                            <i class="icofont-phone"></i>
+                                                            <a href="tel:{{ $callCenter->phone_number }}" class="text-decoration-none" onclick="event.stopPropagation();">
+                                                                {{ $callCenter->phone_number }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div class="border rounded p-3 mb-2 call-center-option" style="cursor: pointer; transition: all 0.3s;">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="call_center_id"
+                                                   id="callCenterOther" value="other">
+                                            <label class="form-check-label w-100" for="callCenterOther" style="cursor: pointer;">
+                                                <strong>Other / Social Media / Website</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="enrollBtn" disabled>
+                                        Enroll Now
+                                    </button>
+                                </div>
+                            </form>
+                        @else
+                            <div class="d-grid">
+                                <a href="{{ route('course.booking.form', $course->course_id) }}" class="btn btn-primary btn-lg">Enroll Now</a>
+                            </div>
+                        @endif
                     </div>
 
                     <!-- Optional Add-Ons -->
@@ -102,5 +160,47 @@
     </div>
 </div>
 <!-- Course section end -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const radioButtons = document.querySelectorAll('input[name="call_center_id"]');
+        const callCenterOptions = document.querySelectorAll('.call-center-option');
+        const enrollBtn = document.getElementById('enrollBtn');
+        radioButtons.forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                if (this.checked) {
+                    enrollBtn.disabled = false;
+                    callCenterOptions.forEach(function(option) {
+                        option.style.backgroundColor = '';
+                        option.style.borderColor = '#dee2e6';
+                    });
+                    const selectedOption = this.closest('.call-center-option');
+                    selectedOption.style.backgroundColor = '#e3f2fd';
+                    selectedOption.style.borderColor = '#2196f3';
+                }
+            });
+        });
 
+        callCenterOptions.forEach(function(option) {
+            option.addEventListener('click', function() {
+                const radio = this.querySelector('input[type="radio"]');
+                if (radio) {
+                    radio.checked = true;
+                    radio.dispatchEvent(new Event('change'));
+                }
+            });
+
+            option.addEventListener('mouseenter', function() {
+                if (!this.querySelector('input[type="radio"]').checked) {
+                    this.style.backgroundColor = '#f5f5f5';
+                }
+            });
+
+            option.addEventListener('mouseleave', function() {
+                if (!this.querySelector('input[type="radio"]').checked) {
+                    this.style.backgroundColor = '';
+                }
+            });
+        });
+    });
+</script>
 @endsection

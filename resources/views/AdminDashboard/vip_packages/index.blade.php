@@ -32,6 +32,7 @@
                             <th>Image</th>
                             <th>Title</th>
                             <th>Price (Rs)</th>
+                            <th>Video Link</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -49,6 +50,15 @@
                                 </td>
                                 <td>{{ $package->title }}</td>
                                 <td>{{ number_format($package->price) }}</td>
+                                <td>
+                                            @if($package->video_link)
+                                                <a href="{{ $package->video_link }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                    View Video
+                                                </a>
+                                            @else
+                                                <span class="text-muted">No Video</span>
+                                            @endif
+                                        </td>
                                 <td>
                                     <span class="badge bg-{{ $package->status === 'active' ? 'success' : 'secondary' }}">
                                         {{ ucfirst($package->status) }}

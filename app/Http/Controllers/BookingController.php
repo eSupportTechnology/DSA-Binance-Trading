@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CallCenter;
 use App\Models\Course;
 use App\Models\Booking;
 use App\Models\Customer;
@@ -16,14 +17,23 @@ use Illuminate\Support\Facades\Storage;
 
 class BookingController extends Controller
 {
-    public function showForm($id)
+    public function showForm($id, Request $request)
     {
         if (!session()->has('customer_id')) {
             return redirect()->route('customer.login')->with('error', 'Please login to book this course.');
         }
 
         $course = Course::findOrFail($id);
-        return view('frontend.booking', compact('course'));
+        $callCenters = CallCenter::all();
+
+        $selectedCallCenterId = $request->get('call_center_id');
+        $selectedCallCenter = null;
+
+        if ($selectedCallCenterId && $selectedCallCenterId !== 'other') {
+            $selectedCallCenter = CallCenter::find($selectedCallCenterId);
+        }
+
+        return view('frontend.booking', compact('course', 'callCenters', 'selectedCallCenter', 'selectedCallCenterId'));
     }
 
     public function store(Request $request)
@@ -32,6 +42,7 @@ class BookingController extends Controller
             'course_id'        => 'required|exists:courses,course_id',
             'contact_number'   => 'required|string|max:15',
             'address'          => 'nullable|string|max:255',
+            'call_center_id'   => 'required',
             'payment_method'   => 'required|in:Card,Bank Transfer',
             'payment_status'   => 'required|in:half,full',
             'receipt_path'     => 'nullable|file|mimes:jpg,jpeg,png,pdf',
@@ -39,6 +50,12 @@ class BookingController extends Controller
             'bank_branch'      => 'nullable|string|max:100',
             'transfer_date'    => 'nullable|date',
         ]);
+
+        if ($request->call_center_id !== 'other') {
+            $request->validate([
+                'call_center_id' => 'exists:call_centers,id'
+            ]);
+        }
 
         $customerId = Session::get('customer_id');
         $customer = Customer::findOrFail($customerId);
@@ -58,10 +75,13 @@ class BookingController extends Controller
             $receiptPath = $request->file('receipt_path')->store('receipts', 'public');
         }
 
+        $callCenterId = $request->call_center_id === 'other' ? null : $request->call_center_id;
+
         if ($request->payment_method === 'Bank Transfer') {
             Booking::create([
-                'customer_id'    => $customer->user_id, // ✅ should be $customer->id not user_id
+                'customer_id'    => $customer->user_id,
                 'course_id'      => $request->course_id,
+                'call_center_id' => $callCenterId,
                 'payment_method' => $request->payment_method,
                 'payment_status' => $request->payment_status,
                 'receipt_path'   => $receiptPath,
@@ -74,7 +94,6 @@ class BookingController extends Controller
             return redirect()->route('booking.success');
         }
 
-        // 🟢 Card Payment flow
         $course   = Course::findOrFail($request->course_id);
         $amount   = $request->payment_status === 'full' ? $course->total_price : $course->first_payment;
         $currency = 'LKR';
@@ -99,8 +118,8 @@ class BookingController extends Controller
             'customer_last_name'     => $lastName,
             'customer_phone_number'  => $customer->contact_number,
             'customer_email'         => $customer->email,
-            'transaction_redirect_url' => route('payment.callback', ['reference' => $reference]), // ✅ Pass reference
-            'additional_data'         => (string)$reference, // ✅ extra safe to store reference here too
+            'transaction_redirect_url' => route('payment.callback', ['reference' => $reference]),
+            'additional_data'         => (string)$reference,
         ]);
 
         if ($response->successful() && isset($response['data']['gateway']['redirect_url'])) {
@@ -108,10 +127,10 @@ class BookingController extends Controller
 
             Log::info('Redirecting to OnePay', ['url' => $redirectUrl]);
 
-            // Save booking with Pending status immediately
             Booking::create([
                 'customer_id'    => $customer->user_id,
                 'course_id'      => $request->course_id,
+                'call_center_id' => $callCenterId,
                 'payment_method' => 'Card',
                 'payment_status' => $request->payment_status,
                 'reference'      => $reference,
@@ -214,7 +233,7 @@ class BookingController extends Controller
         return response()->json(['message' => 'Payment failed or canceled'], 200);
     }
 
-    
+
     public function pending()
     {
         $bookings = Booking::with('customer', 'course')

@@ -18,6 +18,7 @@ class Course extends Model
         'total_price',
         'first_payment',
         'image',
+        'video_link',
         'location',
         'mode',
         'branch_id',

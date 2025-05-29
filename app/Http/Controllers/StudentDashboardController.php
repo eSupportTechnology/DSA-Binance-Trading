@@ -22,13 +22,23 @@ class StudentDashboardController extends Controller
     {
         $customerId = session('customer_id');
 
-        $bookings = Booking::with('course')
-            ->where('customer_id', $customerId)
-            ->whereIn('status', ['Confirmed', 'Half']) // Only confirmed or half-paid
+        $customer = Customer::where('user_id', $customerId)
+            ->where('status', 1) // Only active customers
+            ->first();
+
+        if (!$customer) {
+            // Optionally handle inactive or non-existent customer
+            return redirect()->back()->with('error', 'Access denied or customer inactive.');
+        }
+
+        $bookings = $customer->bookings()
+            ->with('course')
+            ->whereIn('status', ['Confirmed', 'Half'])
             ->get();
 
         return view('StudentDashboard.course.main', compact('bookings'));
     }
+
 
     public function courseDetails($bookingId)
     {

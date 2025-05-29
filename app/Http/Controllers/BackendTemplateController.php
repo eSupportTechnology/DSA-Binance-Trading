@@ -25,7 +25,7 @@ class BackendTemplateController extends Controller
     {
         $customers = Customer::with('assignedBatches')->latest()->paginate(10);
         return view('AdminDashboard.customers.index', compact('customers'));
-    }    
+    }
 
     // Toggle status (active/inactive)
     public function toggleStatus($id)
@@ -160,12 +160,9 @@ class BackendTemplateController extends Controller
         return redirect()->back()->with('success', 'Booking, batch and SMS updated successfully.');
     }
 
-
-
     public function showOrder($id)
     {
-        $booking = Booking::with(['customer', 'course'])->findOrFail($id);
+        $booking = Booking::with(['customer', 'course', 'callCenter'])->findOrFail($id);
         return view('AdminDashboard.orders.show', compact('booking'));
     }
-
 }
